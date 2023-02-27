@@ -1,0 +1,24 @@
+.navbar {
+  background-color: black;
+  color: white;
+  display: flex;
+  justify-content: space-evenly;
+  padding: 3vw;
+}
+
+.navbar div a {
+  text-decoration: none;
+  color: white;
+}
+
+.navbar div :hover {
+  background-color: rgb(152, 219, 51);
+  color: blue;
+  padding: 2vw;
+  border: 1px solid red;
+  border-radius: 5vw;
+  animation: ease 5ms;
+}
+
+
+

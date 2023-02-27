@@ -1,0 +1,25 @@
+.logms {
+  margin: auto;
+  margin-top: 8vh;
+  font-size: 3vw;
+  margin-left: 35vw;
+}
+
+.logcard {
+  margin: auto;
+  margin-top: 1vh;
+  background-color: rgb(204, 225, 228);
+  border-radius: 5vw;
+  width: 70vw;
+  height: 40vh;
+  justify-content: space-evenly;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.item {
+  color: red;
+  display: flex;
+  flex-direction: column;
+}
