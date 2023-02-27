@@ -14,7 +14,6 @@ oauthlib
 pandas
 Pillow
 psutil
-pycairo
 PyJWT
 PyNaCl
 pyparsing
