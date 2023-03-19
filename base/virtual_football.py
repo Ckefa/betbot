@@ -21,10 +21,10 @@ class Epl:
             tm = Team(i, n, self.ratings[i], [])
             self.table.teams.append(tm)
 
-        self.C1 = list(combinations(self.table.teams, 2))
-        self.C2 = list(map(lambda x: (x[1], x[0]), self.C1))
+        self.C1 = set(combinations(self.table.teams, 2))
+        self.C2 = set(map(lambda x: (x[1], x[0]), self.C1))
 
-        self.s1 = Schedule(self.C1 + self.C2)
+        self.s1 = Schedule(self.C1 | self.C2)
 
     def fetch(self):
         r = self.s1.get()
