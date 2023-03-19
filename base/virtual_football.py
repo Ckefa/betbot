@@ -50,6 +50,11 @@ class Team:
     draw: int = 0
     goals: int = 0
 
+    def __hash__(self):
+        return hash(self.name)
+
+    def __eq__(self, other):
+        return self.name == other.name
 
 @dataclass
 class Table:
@@ -157,14 +162,14 @@ class Schedule:
     def get(self):
         if not self.calendar:
             return None
-        res = []
-        played = []
+        res = set()
+        played = set()
 
         while len(res) < 8:
             for fix in self.calendar:
                 if fix[0] not in played and fix[1] not in played:
-                    played += [fix[0], fix[1]]
-                    res.append(fix)
+                    played.update([fix[0], fix[1]])
+                    res.add(fix)
 
             for jk in res:
                 self.calendar.remove(jk)
