@@ -6,8 +6,23 @@ from random import gauss, randint
 
 class Epl:
     def __init__(self):
-        self.teams = teams = ["Ars", "Bou", "Bur", "Che", "Cry", "Eve", "Lei",
-                              "Liv", "MaC", "MaU", "New", "Sou", "Tot", "Wat", "Wes", "Wol"]
+        self.teams = teams = [
+            "Ars",
+            "Bou",
+            "Bur",
+            "Che",
+            "Cry",
+            "Eve",
+            "Lei",
+            "Liv",
+            "MaC",
+            "MaU",
+            "New",
+            "Sou",
+            "Tot",
+            "Wat",
+            "Wes",
+            "Wol"]
         self.ratings = [80, 74, 73, 84, 76, 77,
                         79, 84, 85, 82, 78, 75, 81, 73, 79, 78]
         self.table = Table([], [])
@@ -56,6 +71,7 @@ class Team:
     def __eq__(self, other):
         return self.name == other.name
 
+
 @dataclass
 class Table:
     teams: list
@@ -65,7 +81,14 @@ class Table:
         df = DataFrame(self.teams)
         df = df.sort_values(by=['pts'], ascending=False).drop(
             columns=["streak", "rank"])
-        df = [list(i) for i in zip(df["name"], df["pts"], df["gpl"], df["win"], df["draw"], df["lose"])]
+        df = [
+            list(i) for i in zip(
+                df["name"],
+                df["pts"],
+                df["gpl"],
+                df["win"],
+                df["draw"],
+                df["lose"])]
 
         return df
 
@@ -133,26 +156,25 @@ class MatchDay:
     results: list
 
     def start(self):
-        #print(f"-- MatchDay {self.id} --")
+        # print(f"-- MatchDay {self.id} --")
         if not self.fixtures:
             print("all games played")
             return None
 
         for z, m in enumerate(self.fixtures):
-            #print(m[0].name, "   vs   ", m[1].name)
+            # print(m[0].name, "   vs   ", m[1].name)
             mt = Match(z, m[0], m[1], 1)
             self.results.append(mt.play())
-
 
         if len(self.fixtures) != len(self.results):
             raise Exception("Mismatching results")
 
-        #print("---   Results   ----")
+        # print("---   Results   ----")
         rs = self.results
         for t, j in enumerate(self.fixtures):
             x = f"{j[0].name} {rs[t][0]}"
             y = f"{j[1].name} {rs[t][1]}"
-            #print(x, "  -   ", y)
+            # print(x, "  -   ", y)
 
 
 @dataclass
@@ -175,8 +197,3 @@ class Schedule:
                 self.calendar.remove(jk)
 
         return res
-
-
-
-
-
