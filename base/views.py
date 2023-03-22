@@ -58,7 +58,7 @@ def userlogin(request):
         user = authenticate(request, username=email, password=pass1)
         if user:
             login(request, user)
-            #print(request.user, request.user.is_authenticated, user)
+            # print(request.user, request.user.is_authenticated, user)
             return Response("login success")
         else:
             return Response("invalid details")
@@ -66,8 +66,8 @@ def userlogin(request):
 
 @api_view(["GET"])
 def check_status(request):
-    #print(request.user)
-    #print(request.user.username)
+    # print(request.user)
+    # print(request.user.username)
     if request.user.is_authenticated:
         customer = Customer.objects.get(user__username=request.user.username)
         customer = CustomerSerializer(customer, many=False)
@@ -114,7 +114,7 @@ def run_games():
         md = epl.id + 1
         ongoing = [[i[0].name, i[1].name] for i in epl.fixtures]
         completed = cache
-        cache = [[[i[0][0],  i[1][0]],  [i[0][1], i[1][1]]]
+        cache = [[[i[0][0], i[1][0]], [i[0][1], i[1][1]]]
                  for i in zip(ongoing, epl.results)]
         table = tcache
         tcache = league.table.get_table()
