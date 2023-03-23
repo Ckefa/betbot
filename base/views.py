@@ -105,6 +105,8 @@ def run_games():
 
     while (t := (time.time() - tm)) < 60 and md:
         # print(f"starts in {int(t)}")
+        if int(60 - (time.time() - tm)) < 0:
+            break
         time.sleep(1)
 
     tm = time.time()
