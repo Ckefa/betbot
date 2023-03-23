@@ -5,7 +5,7 @@ from .models import Customer
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from . import virtual_football as vfl
-from threading import Thread
+from threading import Thread, current_thread
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
@@ -106,8 +106,7 @@ def run_games():
     while (t := (time.time() - tm)) < 60 and md:
         # print(f"starts in {int(t)}")
         if int(60 - (time.time() - tm)) < 0:
-            tm = time.time()
-            break
+            print("60 - ", time.time(), '-', tm, t)
         time.sleep(1)
 
     tm = time.time()
@@ -125,8 +124,13 @@ def run_games():
     if md > 29:
         league.__init__()
         league.start()
-    run_games()
 
+def control():
+    while True:
+        t1 = Thread(target=run_games)
+        t1.start()
+        t1.join()
 
-t1 = Thread(target=run_games)
-t1.start()
+thread = Thread(target=control)
+thread.start()
+
