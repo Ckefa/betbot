@@ -104,12 +104,10 @@ def run_games():
     global tm, md, tcache, table, ongoing, completed, cache
 
     while (t := (time.time() - tm)) < 60 and md:
-        # print(f"starts in {int(t)}")
-        if int(60 - (time.time() - tm)) < 0:
-            print("60 - ", time.time(), '-', tm, t)
         time.sleep(1)
-
-    tm = time.time()
+    else:
+        tm = time.time()
+        time.sleep(1)
 
     epl = league.fetch()
     if epl:
