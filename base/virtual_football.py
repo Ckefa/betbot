@@ -195,7 +195,7 @@ class Schedule:
                 if len(self.calendar) <= 8:
                     res.update(self.calendar)
                     break
-                elif all(t in played for t in m):
+                elif any(t in played for t in m):
                     continue
                 else:
                     res.add(m)
