@@ -87,7 +87,10 @@ def user_logout(request):
 
 @api_view(["GET"])
 def fixtures(request):
-    w = int(60 - (time.time() - tm))
+    w = int(4 - (time.time() - tm))
+    if w < 0:
+        print("error")
+        pass
     return Response({"fixtures": ongoing, "x": w, "y": md})
 
 
@@ -103,7 +106,7 @@ def base(request):
 def run_games():
     global tm, md, tcache, table, ongoing, completed, cache
 
-    while (t := (time.time() - tm)) < 60 and md:
+    while (t := (time.time() - tm)) < 4 and md:
         time.sleep(1)
     else:
         tm = time.time()
@@ -118,17 +121,11 @@ def run_games():
                  for i in zip(ongoing, epl.results)]
         table = tcache
         tcache = league.table.get_table()
-
+ 
     if md > 29:
         league.__init__()
         league.start()
+    run_games()
 
-def control():
-    while True:
-        t1 = Thread(target=run_games)
-        t1.start()
-        t1.join()
-
-thread = Thread(target=control)
-thread.start()
-
+t1 = Thread(target=run_games)
+t1.start()

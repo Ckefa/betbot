@@ -65,11 +65,14 @@ class Team:
     draw: int = 0
     goals: int = 0
 
+    def __repr__(self):
+        return self.name
+    
     def __hash__(self):
-        return hash(self.name)
+        return hash((self.id, self.name))
 
     def __eq__(self, other):
-        return self.name == other.name
+        return self.name == other.name and self.id == other.id 
 
 
 @dataclass
@@ -179,7 +182,7 @@ class MatchDay:
 
 @dataclass
 class Schedule:
-    calendar: list
+    calendar: set
 
     def get(self):
         if not self.calendar:
@@ -188,12 +191,23 @@ class Schedule:
         played = set()
 
         while len(res) < 8:
-            for fix in self.calendar:
-                if fix[0] not in played and fix[1] not in played:
-                    played.update([fix[0], fix[1]])
-                    res.add(fix)
+            for m in self.calendar:
+                if len(res) >= 8:
+                    break
+                elif len(self.calendar) <= 8:
+                    res.update(self.calendar)
+                    break
+                elif all(t in played for t in m):
+                    continue
+                else:
+                    res.add(m)
+                    played.update(m)
 
-            for jk in res:
-                self.calendar.remove(jk)
-
+        self.calendar -= res
         return res
+
+if __name__ == "__main__":
+    e = Epl()
+    e.start()
+    while e.fetch():
+        pass
