@@ -87,7 +87,7 @@ def user_logout(request):
 
 @api_view(["GET"])
 def fixtures(request):
-    w = int(4 - (time.time() - tm))
+    w = int(60 - (time.time() - tm))
     if w < 0:
         print("error")
         pass
@@ -106,7 +106,7 @@ def base(request):
 def run_games():
     global tm, md, tcache, table, ongoing, completed, cache
 
-    while (t := (time.time() - tm)) < 4 and md:
+    while (t := (time.time() - tm)) < 60 and md:
         time.sleep(1)
     else:
         tm = time.time()
