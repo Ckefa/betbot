@@ -187,14 +187,12 @@ class Schedule:
     def get(self):
         if not self.calendar:
             return None
-        res = set()
-        played = set()
+        else:
+            res = set()
+            played = set()
 
-        while len(res) < 8:
             for m in self.calendar:
-                if len(res) >= 8:
-                    break
-                elif len(self.calendar) <= 8:
+                if len(self.calendar) <= 8:
                     res.update(self.calendar)
                     break
                 elif all(t in played for t in m):
@@ -202,9 +200,11 @@ class Schedule:
                 else:
                     res.add(m)
                     played.update(m)
+                    if len(res) > 8:
+                        break
 
-        self.calendar -= res
-        return res
+            self.calendar -= res
+            return res
 
 if __name__ == "__main__":
     e = Epl()
