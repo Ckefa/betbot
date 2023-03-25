@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 from dataclasses import dataclass
 from pandas import DataFrame
 from itertools import combinations
@@ -26,9 +27,9 @@ class Epl:
         self.ratings = [80, 74, 73, 84, 76, 77,
                         79, 84, 85, 82, 78, 75, 81, 73, 79, 78]
         self.table = Table([], [])
-        self.c1 = []
-        self.c2 = []
-        self.s1 = []
+        self.C1 = []
+        self.C2 = []
+        self.s1 = None
         self.n = 0
 
     def start(self):
@@ -36,10 +37,10 @@ class Epl:
             tm = Team(i, n, self.ratings[i], [])
             self.table.teams.append(tm)
 
-        self.C1 = set(combinations(self.table.teams, 2))
-        self.C2 = set(map(lambda x: (x[1], x[0]), self.C1))
+        self.C1 = list(combinations(self.table.teams, 2))
+        self.C2 = list(map(lambda x: (x[1], x[0]), self.C1))
 
-        self.s1 = Schedule(self.C1 | self.C2)
+        self.s1 = Schedule(self.C1 + self.C2)
 
     def fetch(self):
         r = self.s1.get()
@@ -182,7 +183,7 @@ class MatchDay:
 
 @dataclass
 class Schedule:
-    calendar: set
+    calendar: list
 
     def get(self):
         if not self.calendar:
@@ -191,20 +192,19 @@ class Schedule:
             res = set()
             played = set()
 
-            while len(res) < 8:
-                for m in self.calendar:
-                    if len(self.calendar) <= 8:
-                        res.update(self.calendar)
-                        break
-                    elif any(t in played for t in m):
-                        continue
-                    else:
-                        res.add(m)
-                        played.update(m)
-                        if len(res) >= 8:
-                            break
+            print("before", len(self.calendar))
 
-            self.calendar -= res
+            for m in self.calendar:
+                if any(t in played for t in m):
+                    continue
+                res.add(m)
+                played.update(m)
+
+            for m in res:
+                self.calendar.remove(m)
+                
+            print("after ", len(self.calendar))
+            print("res", len(res))
             return res
 
 if __name__ == "__main__":
