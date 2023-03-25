@@ -192,7 +192,7 @@ class Schedule:
             res = set()
             played = set()
 
-            print("before", len(self.calendar))
+            #print("before", len(self.calendar))
 
             for m in self.calendar:
                 if any(t in played for t in m):
@@ -203,8 +203,8 @@ class Schedule:
             for m in res:
                 self.calendar.remove(m)
                 
-            print("after ", len(self.calendar))
-            print("res", len(res))
+            #print("after ", len(self.calendar))
+            #print("res", len(res))
             return res
 
 if __name__ == "__main__":
