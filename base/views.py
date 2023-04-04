@@ -12,32 +12,6 @@ from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
 import time
 import json
 
-"""Define class Timer."""
-
-
-class Timer:
-    #"""Manages time for the program."""
-    count = 0
-    def __init__(self, limit=60):
-        self.limit = limit
-        self.current = 0
-        t1 = Thread(target=self.__counter)
-        t1.start()
-
-    def __counter(self):
-        #"""Increment current value by 1 every second."""
-        while True:
-            time.sleep(1)
-            self.current += 1 #increase the current time by 1 second
-            if self.get_time() < 1:
-                #"""Checks if the time has reached the limit."""
-                self.current = 0 #restarts the value of current time value
-                self.count += 1
-
-    def get_time(self):
-        #"""Return the current time state."""
-        return self.limit - self.current
-    
 
 @api_view(["POST"])
 def signup(request):
@@ -101,58 +75,91 @@ def user_logout(request):
 
 @api_view(["GET"])
 def fixtures(request):
-    return Response({"fixtures": ongoing, "x": timer.get_time(), "y": md})
+    return Response({"fixtures": ms.ongoing, "x": timer.get_time(), "y": ms.md})
 
 
 @api_view(["GET"])
 def results(request):
-    return JsonResponse({"results": completed, "table": table})
+    return JsonResponse({"results": ms.completed, "table": ms.table})
 
 
 def base(request):
     return render(request, "index.html")
 
 
-def run_games():
-    global md, tcache, table, ongoing, completed, cache
+"""Define class Timer."""
 
-    epl = league.fetch()
-    if epl:
-        md = epl.id + 1
-        ongoing = [[i[0].name, i[1].name] for i in epl.fixtures]
-        completed = cache
-        cache = [[[i[0][0], i[1][0]], [i[0][1], i[1][1]]]
-                 for i in zip(ongoing, epl.results)]
-        table = tcache
-        tcache = league.table.get_table()
- 
-    if md > 29:
-        league.__init__()
-        league.start()
 
-def control():
-    while True:
-        if timer.get_time() in {60, 59, 58}:
-            thread = Thread(target=run_games())
-            thread.start()
-            thread.join()
-            time.sleep(56)
-        else:
+class Timer:
+    # """Manages time for the program."""
+    count = 0
+
+    def __init__(self, limit=60):
+        self.limit = limit
+        self.current = 0
+        t1 = Thread(target=self.__counter)
+        t1.start()
+
+    def __counter(self):
+        # """Increment current value by 1 every second."""
+        while True:
             time.sleep(1)
+            self.current += 1  # increase the current time by 1 second
+            if self.get_time() < 1:
+                # """Checks if the time has reached the limit."""
+                self.current = 0  # restarts the value of current time value
+                self.count += 1
 
+    def get_time(self):
+        # """Return the current time state."""
+        return self.limit - self.current
+
+
+"""Define class Master."""
+
+
+class Master:
+    """Controls the api."""
+    md = 0
+    epl, table = [], []
+    cache, tcache = [], []
+    ongoing, completed = [], []
+
+    def __init__(self):
+        Master.league = vfl.Epl()
+        Master.league.start()
+        Master.t1 = Thread(target=self.control)
+        self.t1.start()
+
+    @classmethod
+    def run_games(cls):
+        # global md, tcache, table, ongoing, completed, cache
+        cls.epl = cls.league.fetch()
+        if cls.epl:
+            cls.md = cls.epl.id + 1
+            cls.ongoing = [[i[0].name, i[1].name] for i in cls.epl.fixtures]
+            cls.completed = cls.cache
+            cls.cache = [[[i[0][0], i[1][0]], [i[0][1], i[1][1]]]
+                     for i in zip(cls.ongoing, cls.epl.results)]
+            cls.table = cls.tcache
+            cls.tcache = cls.league.table.get_table()
+
+        if cls.md > 29:
+            cls.league.__init__()
+            cls.league.start()
+
+    @classmethod
+    def control(cls):
+        while True:
+            if timer.get_time() in {60, 59, 58}:
+                thread = Thread(target=cls.run_games())
+                thread.start()
+                thread.join()
+                time.sleep(56)
+            else:
+                time.sleep(1)
 # _____ classes and functions ending_________________#
 
-md = 0
-epl ,ongoing = [], []
-cache = []
-tcache = []
-table = []
-completed = []
-table = []
 
-league = vfl.Epl()
-league.start()
 timer = Timer()
-
-t1 = Thread(target=control)
-t1.start()
+ms = Master()
