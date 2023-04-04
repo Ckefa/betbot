@@ -12,18 +12,32 @@ from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
 import time
 import json
 
-tm = time.time()
-epl = []
-md = 0
-ongoing = []
-cache = []
-tcache = []
-table = []
-completed = []
-table = []
-league = vfl.Epl()
-league.start()
+"""Define class Timer."""
 
+
+class Timer:
+    #"""Manages time for the program."""
+    count = 0
+    def __init__(self, limit=60):
+        self.limit = limit
+        self.current = 0
+        t1 = Thread(target=self.__counter)
+        t1.start()
+
+    def __counter(self):
+        #"""Increment current value by 1 every second."""
+        while True:
+            time.sleep(1)
+            self.current += 1 #increase the current time by 1 second
+            if self.get_time() < 1:
+                #"""Checks if the time has reached the limit."""
+                self.current = 0 #restarts the value of current time value
+                self.count += 1
+
+    def get_time(self):
+        #"""Return the current time state."""
+        return self.limit - self.current
+    
 
 @api_view(["POST"])
 def signup(request):
@@ -87,11 +101,7 @@ def user_logout(request):
 
 @api_view(["GET"])
 def fixtures(request):
-    w = int(60 - (time.time() - tm))
-    if w < 0:
-        print("error")
-        pass
-    return Response({"fixtures": ongoing, "x": w, "y": md})
+    return Response({"fixtures": ongoing, "x": timer.get_time(), "y": md})
 
 
 @api_view(["GET"])
@@ -104,13 +114,7 @@ def base(request):
 
 
 def run_games():
-    global tm, md, tcache, table, ongoing, completed, cache
-
-    while (t := (time.time() - tm)) < 60 and md:
-        time.sleep(1)
-    else:
-        tm = time.time()
-        time.sleep(1)
+    global md, tcache, table, ongoing, completed, cache
 
     epl = league.fetch()
     if epl:
@@ -125,7 +129,30 @@ def run_games():
     if md > 29:
         league.__init__()
         league.start()
-    run_games()
 
-t1 = Thread(target=run_games)
+def control():
+    while True:
+        if timer.get_time() in {60, 59, 58}:
+            thread = Thread(target=run_games())
+            thread.start()
+            thread.join()
+            time.sleep(56)
+        else:
+            time.sleep(1)
+
+# _____ classes and functions ending_________________#
+
+md = 0
+epl ,ongoing = [], []
+cache = []
+tcache = []
+table = []
+completed = []
+table = []
+
+league = vfl.Epl()
+league.start()
+timer = Timer()
+
+t1 = Thread(target=control)
 t1.start()
