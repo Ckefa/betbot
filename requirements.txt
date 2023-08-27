@@ -1,8 +1,5 @@
-Django
-django-cors-headers
-djangorestframework
-html5
-lxml
+flask
 pandas
-requests
-urllib3
+flask-sqlalchemy
+Flask-CORS
+Flask-Login

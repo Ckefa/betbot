@@ -1,3 +1,3 @@
 # betbot
-django project for virtual sports betting
+flask project for virtual sports betting
 
