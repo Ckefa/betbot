@@ -1,12 +1,13 @@
 import { Link } from "react-router-dom";
 import React, { useState, useEffect, Fragment } from "react";
-import { Menu, Button } from "antd";
+import { Button } from "antd";
 import { UserOutlined } from "@ant-design/icons";
+import { logo } from "../assets";
 
-function Navbar({ user, setUser }) {
+function Navbar({ user, setBal }) {
   const host = "http://localhost/";
 
-  console.log("Navbar rendered...");
+  console.log("Navbar rendered...", user.bal);
 
   useEffect(() => {
     fetch(`${host}status`)
@@ -17,15 +18,15 @@ function Navbar({ user, setUser }) {
   const update = (data) => {
     console.log("this is the data", data);
     if (data.name) {
-      setUser((prev) => ({
-        ...prev,
-        name: data.name,
-        bal: data.balance,
-      }));
-      console.log(user);
+      user.name = data.name;
+      user.bal = data.balance;
+      setBal(user.bal);
+      //console.log(user);
     } else {
-      setUser({ name: "clinton", bal: 1234.33 });
-      console.log("error getting user details.");
+      user.name = "clinton";
+      user.bal = 1234.56;
+      setBal(user.bal);
+      user.checkBalance();
     }
   };
 
@@ -41,8 +42,10 @@ function Navbar({ user, setUser }) {
   ];
 
   return (
-    <nav className="text-white">
-      <ul className="flex gap-[2vw]">
+    <nav className="flex justify-between items-center text-white">
+      <img alt="BetBot" src={logo} className="h-12 w-18" />
+
+      <ul className="flex gap-[2vw] justify-end">
         {menuItems.map((item, index) => (
           <li
             className="text-[2vw] hover:bg-white hover:rounded-[2vw] hover:text-black"
@@ -52,7 +55,7 @@ function Navbar({ user, setUser }) {
           </li>
         ))}
 
-        <li key="6" className="ml-auto">
+        <li key="6" className="">
           {user.name && (
             <div className="flex items-center justify-around w-[30vw] text-orange-400">
               <Button className="bg-white" onClick={logout}>

@@ -12,7 +12,7 @@ from api import base, db
 from api.views import User
 
 
-app = Flask(__name__, template_folder="bbot/build", static_folder="bbot/build/static")
+app = Flask(__name__, template_folder="bbot/dist", static_folder="bbot/dist/assets")
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///mydatabase.db"
 app.secret_key = "Ckefa7474"
 app.register_blueprint(base)

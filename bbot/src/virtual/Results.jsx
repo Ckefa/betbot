@@ -5,7 +5,7 @@ function Results({ params }) {
   const { md, results } = params;
 
   return (
-    <Card className="bg-black text-white">
+    <Card className="bg-black text-white shadow-lg">
       <Fragment>
         <div className="text-xl">
           Matchday {md === "1" ? "30" : parseInt(md) - 1} Results

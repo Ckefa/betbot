@@ -1,5 +1,4 @@
-import { Card } from "antd";
-import { Fragment } from "react";
+
 
 function Game({ params }) {
   const { md, data, addSelect } = params;

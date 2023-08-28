@@ -8,7 +8,7 @@ import { Layout, Input, Space, Row, Col, Card, Button } from "antd";
 const MemodResults = memo(Results);
 const MemodGame = memo(Game);
 
-function Vfl({ user, setUser }) {
+function Vfl({ user, setBal }) {
   const [data, setData] = useState([]);
   const [results, setRes] = useState([]);
   const [md, setMd] = useState("");
@@ -127,7 +127,9 @@ function Vfl({ user, setUser }) {
     else if (stake > user.bal || user.bal < 10)
       alert("Insufficient balance please top up your account.");
     else {
-      setUser((prev) => ({ name: prev.name, bal: prev.bal - stake }));
+      user.bal -= stake;
+      setBal(user.bal);
+      setTable(user.bal);
       fetch(`${host}place`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -136,7 +138,7 @@ function Vfl({ user, setUser }) {
         .then((resp) => resp.json())
         .then((resp) => console.log(resp));
     }
-    console.log(user);
+    user.checkBalance();
   }
 
   return (
@@ -205,8 +207,8 @@ function Vfl({ user, setUser }) {
         </Row>
 
         <Row className="flex justify-around">
-          <Col md={6} sm={8} xs={22}>
-            <Card className="bg-black text-white">
+          <Col lg={6} md={10} xs={22}>
+            <Card className="bg-black text-white shadow-lg">
               <div className="text-xl text-lime-300">
                 Matchday {md} Starts in: {timer}
               </div>
@@ -215,12 +217,16 @@ function Vfl({ user, setUser }) {
             </Card>
           </Col>
 
-          <Col md={6} sm={8} xs={22}>
+          <Col lg={6} md={10} xs={22}>
             {/*------- Results --------*/}
             <MemodResults params={resParams} />
           </Col>
 
-          <Col span={stable ? 6 : 0}>{stable && <Table tb={table} />}</Col>
+          {stable && (
+            <Col lg={6} md={10} xs={22}>
+              {stable && <Table tb={table} />}
+            </Col>
+          )}
         </Row>
       </Space>
     </Layout>
