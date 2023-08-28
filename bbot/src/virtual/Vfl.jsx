@@ -8,7 +8,7 @@ import { Layout, Input, Space, Row, Col, Card, Button } from "antd";
 const MemodResults = memo(Results);
 const MemodGame = memo(Game);
 
-function Vfl({ user, setBal }) {
+function Vfl({ host, user, setBal }) {
   const [data, setData] = useState([]);
   const [results, setRes] = useState([]);
   const [md, setMd] = useState("");
@@ -28,7 +28,6 @@ function Vfl({ user, setBal }) {
     () => ({ md, data, addSelect, timer, slip }),
     [md]
   );
-  const host = "http://localhost/";
 
   //console.log("Vfl rendered: ", timer);
 

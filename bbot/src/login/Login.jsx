@@ -2,11 +2,10 @@ import "./Login.css";
 import React, { useState, useEffect } from "react";
 import { Navigate, redirect } from "react-router-dom";
 
-function Login() {
+function Login({ host }) {
   const [mail, setMail] = useState("");
   const [passkey, setPass] = useState("");
   const [redirect, setRedirect] = useState(false);
-  const host = "/";
 
   async function submit() {
     const auth = await fetch(`${host}login`, {
@@ -20,7 +19,7 @@ function Login() {
 
     const resp = await auth.json();
     console.log(resp);
-    fetch("http://localhost/status")
+    fetch(`${host}status`)
       .then((resp) => resp.json())
       .then((resp) => console.log(resp));
 

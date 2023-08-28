@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import { Navigate } from "react-router-dom";
 
-function Signup() {
+function Signup({ host }) {
   const [mail, setMail] = useState("");
   const [pass, setPass] = useState("");
   const [pass2, setPass2] = useState("");
   const [redirect, setRedirect] = useState(false);
-  const host = "/";
 
   async function submit() {
     const resp = await fetch(`${host}signup`, {

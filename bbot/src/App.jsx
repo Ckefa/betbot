@@ -22,6 +22,7 @@ function App() {
   const [user, setUser] = useState(new Customer());
   const [bal, setBal] = useState(user.bal);
   const { Header, Content } = Layout;
+  const host = "/";
 
   console.log("APlication rendered.");
 
@@ -34,9 +35,12 @@ function App() {
       <Content>
         <Routes>
           <Route exact path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/vfl" element={<Vfl user={user} setBal={setBal} />} />
-          <Route path="/signup" element={<Signup />} />
+          <Route path="/login" element={<Login host={host} />} />
+          <Route
+            path="/vfl"
+            element={<Vfl host={host} user={user} setBal={setBal} />}
+          />
+          <Route path="/signup" element={<Signup host={host} />} />
         </Routes>
       </Content>
     </Layout>
