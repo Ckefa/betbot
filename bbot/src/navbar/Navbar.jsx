@@ -21,10 +21,10 @@ function Navbar({ host, user, setBal }) {
       setBal(user.bal);
       //console.log(user);
     } else {
-      user.name = "clinton";
-      user.bal = 1234.56;
-      setBal(user.bal);
-      user.checkBalance();
+      //user.name = "clinton";
+      //user.bal = 1234.56;
+      //(user.bal);
+      console.log("Errer getting user details.");
     }
   };
 
@@ -33,7 +33,9 @@ function Navbar({ host, user, setBal }) {
       .then((resp) => resp.json())
       .then((resp) => {
         console.log(resp);
-        setBal(user.bal);
+        user.bal = null;
+        user.name = null;
+        setBal(null);
       });
 
   const menuItems = [

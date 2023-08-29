@@ -64,6 +64,7 @@ function Vfl({ host, user, setBal }) {
 
   //useEffect(() => console.log(slip), [slip]);
   useEffect(() => {
+    setBal(0);
     const temp = JSON.parse(localStorage.getItem("slip"));
     update(temp);
     setSlip(temp);

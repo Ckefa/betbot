@@ -35,7 +35,10 @@ function App() {
       <Content>
         <Routes>
           <Route exact path="/" element={<Home />} />
-          <Route path="/login" element={<Login host={host} />} />
+          <Route
+            path="/login"
+            element={<Login host={host} setBal={setBal} />}
+          />
           <Route
             path="/vfl"
             element={<Vfl host={host} user={user} setBal={setBal} />}

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Navigate, Link } from "react-router-dom";
 import { Form, Input, Button } from "antd";
 
-function Login({ host }) {
+function Login({ host, setBal }) {
   const [redirect, setRedirect] = useState(false);
 
   console.log("Login Rendered......");
@@ -18,7 +18,10 @@ function Login({ host }) {
       .then((resp) => resp.json())
       .then((resp) => {
         console.log(resp);
-        if (resp.resp.includes("success")) setRedirect(true);
+        if (resp.resp.includes("success")) {
+          setBal(null);
+          setRedirect(!redirect);
+        }
       });
   };
 
