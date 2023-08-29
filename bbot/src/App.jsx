@@ -22,7 +22,7 @@ function App() {
   const [user, setUser] = useState(new Customer());
   const [bal, setBal] = useState(user.bal);
   const { Header, Content } = Layout;
-  const host = "http://localhost/";
+  const host = "/";
 
   console.log("APlication rendered.");
 
