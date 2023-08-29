@@ -4,9 +4,7 @@ import { Button } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import { logo } from "../assets";
 
-function Navbar({ user, setBal }) {
-  const host = "http://localhost/";
-
+function Navbar({ host, user, setBal }) {
   console.log("Navbar rendered...", user.bal);
 
   useEffect(() => {
@@ -31,9 +29,12 @@ function Navbar({ user, setBal }) {
   };
 
   const logout = () =>
-    fetch(`${host}/logout`)
+    fetch(`${host}logout`)
       .then((resp) => resp.json())
-      .then((resp) => console.log(resp));
+      .then((resp) => {
+        console.log(resp);
+        setBal(user.bal);
+      });
 
   const menuItems = [
     { to: "/", text: "Home" },

@@ -1,61 +1,67 @@
-import "./Login.css";
-import React, { useState, useEffect } from "react";
-import { Navigate, redirect } from "react-router-dom";
+import React, { useState } from "react";
+import { Navigate, Link } from "react-router-dom";
+import { Form, Input, Button } from "antd";
 
 function Login({ host }) {
-  const [mail, setMail] = useState("");
-  const [passkey, setPass] = useState("");
   const [redirect, setRedirect] = useState(false);
 
-  async function submit() {
-    const auth = await fetch(`${host}login`, {
+  console.log("Login Rendered......");
+
+  const submit = (values) => {
+    fetch(`${host}login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "X-CSRFToken": getCookie("csrftoken"),
       },
-      body: JSON.stringify({ email: mail, pass1: passkey }),
-    });
-
-    const resp = await auth.json();
-    console.log(resp);
-    fetch(`${host}status`)
+      body: JSON.stringify(values),
+    })
       .then((resp) => resp.json())
-      .then((resp) => console.log(resp));
-
-    if (resp === "login success") {
-      console.log(resp);
-      setRedirect(true);
-    }
-  }
+      .then((resp) => {
+        console.log(resp);
+        if (resp.resp.includes("success")) setRedirect(true);
+      });
+  };
 
   if (redirect) {
     return <Navigate to="/vfl" />;
   }
 
-  function getCookie(name) {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) {
-      return parts.pop().split(";").shift();
-    }
-  }
-
   return (
-    <div>
-      <div className="logms">Login to save your progress</div>
-      <div className="logcard">
-        <div className="item">
-          <span> Email</span>
-          <input onChange={(e) => setMail(e.target.value)} />
-        </div>
-        <div className="item">
-          <span>Password</span>
-          <input onChange={(e) => setPass(e.target.value)} />
-        </div>
-        <button onClick={submit}>Login</button>
-      </div>
-    </div>
+    <Form
+      layout="vertical"
+      onFinish={submit}
+      className="flex flex-col items-center w-[40vw] mx-auto 
+      mt-10 rounded-2xl border border-gray-400 shadow-2xl"
+    >
+      <div className="mt-10 text-2xl">Login to place your bets.</div>
+      <Form.Item
+        label="Email"
+        name="email"
+        className="mt-10"
+        rules={[{ required: true, message: "Please fill your email!!." }]}
+      >
+        <Input allowClear />
+      </Form.Item>
+      <Form.Item
+        label="Password"
+        name="password"
+        className=""
+        rules={[{ required: true, message: "Please fill your Password!!" }]}
+      >
+        <Input.Password allowClear />
+      </Form.Item>
+      <Form.Item>
+        <Button htmlType="submit" className="bg-blue-300">
+          Login
+        </Button>
+      </Form.Item>
+      <Form.Item>
+        <Link to="/signup" className="flex gap-4">
+          <div>I am a ew member, </div>
+          <Button className="bg-lime-400">sign up</Button>
+        </Link>
+      </Form.Item>
+    </Form>
   );
 }
 

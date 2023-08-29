@@ -1,28 +1,23 @@
 import React, { useState } from "react";
-import { Navigate } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
+import { Form, Input, Button } from "antd";
 
 function Signup({ host }) {
-  const [mail, setMail] = useState("");
-  const [pass, setPass] = useState("");
-  const [pass2, setPass2] = useState("");
   const [redirect, setRedirect] = useState(false);
+
+  console.log("Registration  Rendered....");
 
   async function submit() {
     const resp = await fetch(`${host}signup`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "X-CSRFToken": getCookie("csrftoken"),
       },
-      body: JSON.stringify({
-        email: mail,
-        pass1: pass,
-        pass2: pass2,
-      }),
+      body: JSON.stringify(values),
     });
 
     const res = await resp.json();
-    if (res === "signup success") {
+    if (res.resp.includes("success")) {
       console.log("signup success");
       setRedirect(true);
     }
@@ -32,33 +27,54 @@ function Signup({ host }) {
     return <Navigate to="/login" />;
   }
 
-  function getCookie(name) {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) {
-      return parts.pop().split(";").shift();
-    }
-  }
-
   return (
-    <div>
-      <div className="logms">Register using valid details</div>
-      <div className="logcard">
-        <div className="item">
-          <span> Email</span>
-          <input onChange={(e) => setMail(e.target.value)} />
-        </div>
-        <div className="item">
-          <span>Password</span>
-          <input onChange={(e) => setPass(e.target.value)} />
-        </div>
-        <div className="item">
-          <span>Confirm Password</span>
-          <input onChange={(e) => setPass2(e.target.value)} />
-        </div>
-        <button onClick={submit}>Submit</button>
+    <Form
+      layout="vertical"
+      onFinish={submit}
+      className="flex flex-col items-center w-[40vw] mx-auto 
+      mt-10 rounded-2xl border border-gray-400 shadow-2xl"
+    >
+      <div className="mt-4 text-2xl m-4">
+        Please fill in the details below to Register.
       </div>
-    </div>
+      <Form.Item
+        label="Email"
+        name="email"
+        className="mt-4"
+        rules={[{ required: true, message: "Please fill your email!!." }]}
+      >
+        <Input allowClear />
+      </Form.Item>
+      <Form.Item
+        label="Password"
+        name="pass1"
+        className=""
+        rules={[{ required: true, message: "Please fill your Password!!" }]}
+      >
+        <Input.Password allowClear />
+      </Form.Item>
+
+      <Form.Item
+        label="Confirm Password"
+        name="pass2"
+        className=""
+        rules={[{ required: true, message: "Please confirm your Password!!" }]}
+      >
+        <Input.Password allowClear />
+      </Form.Item>
+
+      <Form.Item>
+        <Button htmlType="submit" className="bg-lime-400 text-center">
+          Register
+        </Button>
+      </Form.Item>
+      <Form.Item>
+        <Link to="/login" className="flex gap-4">
+          <div>I have an account, </div>
+          <Button className="bg-blue-300">sign in</Button>
+        </Link>
+      </Form.Item>
+    </Form>
   );
 }
 

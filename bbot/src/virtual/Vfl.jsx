@@ -151,7 +151,6 @@ function Vfl({ host, user, setBal }) {
           <Col>
             <Card className="bg-gray-400">
               <Space>
-                {" "}
                 <Button onClick={toggleTable} className="bg-lime-400">
                   {stable ? "hide" : "table"}
                 </Button>

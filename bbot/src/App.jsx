@@ -22,14 +22,14 @@ function App() {
   const [user, setUser] = useState(new Customer());
   const [bal, setBal] = useState(user.bal);
   const { Header, Content } = Layout;
-  const host = "/";
+  const host = "http://localhost/";
 
   console.log("APlication rendered.");
 
   return (
     <Layout className="h-screen">
       <Header className="w-screen">
-        <Navbar user={user} bal={bal} setBal={setBal} />
+        <Navbar host={host} user={user} bal={bal} setBal={setBal} />
       </Header>
 
       <Content>

@@ -41,21 +41,19 @@ def register():
         new_user = User(email=data["email"], passw=data["pass1"], bal=0.05)
         db.session.add(new_user)
         db.session.commit()
-    return "success"
+    return {"resp": "registration successful"}
 
 
-@base.route("/login/<email>", methods=["GET", "POST"], strict_slashes=False)
-def log_in(email=None):
-    if request.method == "GET" and email:
-        user = User.query.filter_by(email=email).first()
-        if user:
-            session["user"] = user.email
-            return f"logged in as: {user.email}"
-
+@base.route("/login", methods=["GET", "POST"], strict_slashes=False)
+def log_in():
     if request.method == "POST":
         data = request.json
-        user = User.query.filter_by(email=data["email"]).first()
-        if user.passw == data["pass1"]:
+        email = data["email"]
+        user = User.query.filter_by(email=email).first()
+
+        if not user:
+            return {"resp": "user not registered"}
+        elif user.passw == data["password"]:
             session["user"] = user.email
             return {"resp": f"{user.email} login successfully."}
         else:
