@@ -64,11 +64,13 @@ function Home() {
               <div className="text-[18px]">Virtual Football League (vfl)</div>
 
               <ul className="text-[18px]">
-                <li>=> Real-time sports betting on virtual events</li>
-                <li>=> Wide range of sports and events to choose from</li>
-                <li>=> User-friendly interface for placing bets</li>
-                <li>=> Secure and reliable payment options</li>
-                <li>=> Live updates and statistics for informed betting</li>
+                <li>{"=>  "}Real-time sports betting on virtual events</li>
+                <li>{"=>  "} Wide range of sports and events to choose from</li>
+                <li>{"=>  "} User-friendly interface for placing bets</li>
+                <li>{"=>  "} Secure and reliable payment options</li>
+                <li>
+                  {"=>  "} Live updates and statistics for informed betting
+                </li>
               </ul>
             </div>
           </div>
