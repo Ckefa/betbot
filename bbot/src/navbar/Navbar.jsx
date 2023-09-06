@@ -40,36 +40,25 @@ function Navbar({ host, user, setBal }) {
 
   const menuItems = [
     { to: "/", text: "Home" },
-    { to: "/vfl", text: "Virtual League" },
+    { to: "/vfl", text: "virtual" },
     { to: "/bets", text: "My Bets" },
   ];
 
   return (
-    <nav className="flex justify-between items-center text-white">
-      <img alt="BetBot" src={logo} className="h-12 w-18" />
+    <nav className="flex justify-between items-center text-[20px]">
+      <div className=" font-bold">BETBOT</div>
 
-      <ul className="flex gap-[2vw] justify-end">
-        {menuItems.map((item, index) => (
-          <li
-            className="text-[2vw] hover:bg-white hover:rounded-[2vw] hover:text-black"
-            key={index}
-          >
+      <ul className="flex gap-[var(--pgap)]">
+        {menuItems.map((item) => (
+          <li key={item.text}>
             <Link to={item.to}>{item.text}</Link>
           </li>
         ))}
-
-        <li key="6" className="">
-          {user.name && (
-            <div className="flex items-center justify-around w-[30vw] text-orange-400">
-              <Button className="bg-white" onClick={logout}>
-                Log Out
-              </Button>
-              <UserOutlined />
-              <div className="text-[2vw]">
-                {user.name}: {user.bal.toFixed(2)}
-              </div>
-            </div>
-          )}
+        <li
+          className="bg-[var(--important)] text-[var(--secondary)]
+   rounded-[var(--rounded)] pl-[var(--pleft)] pr-[var(--pright)] text-center"
+        >
+          <Link to={"/signup"}>join now</Link>
         </li>
       </ul>
     </nav>

@@ -27,12 +27,12 @@ function App() {
   console.log("APlication rendered.");
 
   return (
-    <Layout className="h-screen">
-      <Header className="w-screen">
+    <Layout className="min-h-screen bg-[var(--primary)] text-white">
+      <header className="h-[2rem] ml-2 mr-4 bgu-[var(--secondary)] pt-4 pl-[var(--pleft)] pr-[var(--pright)]">
         <Navbar host={host} user={user} bal={bal} setBal={setBal} />
-      </Header>
+      </header>
 
-      <Content>
+      <Content className="mt-8">
         <Routes>
           <Route exact path="/" element={<Home />} />
           <Route

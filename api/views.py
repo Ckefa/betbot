@@ -7,8 +7,6 @@
 from api import base, ms, timer, db
 from flask import render_template, request, session
 
-# from flask_login import UserMixin, login_user, login_required, current_user
-
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)

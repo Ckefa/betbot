@@ -1,3 +1,49 @@
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap");
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
+
+:root {
+  --primary: #3d4252;
+  --secondary: #08174b;
+  --tertiary: #17dbcb;
+  --important: #bbff62;
+  --size-head: 70px;
+  --size-nav: 20px;
+  --size-body: 18px;
+  --ppad: 0.25rem;
+  --pleft: 0.5rem;
+  --pright: 0.5rem;
+  --pmargin-top: 2rem;
+  --smargin-top: 1rem;
+  --pgap: 2rem;
+  --sgap: 1rem;
+  --rounded: 0.75rem;
+}
+
+nav ul li {
+  padding-left: var(--pleft);
+  padding-right: var(--pright);
+}
+
+nav ul li:hover {
+  border-radius: var(--rounded);
+  text-align: center;
+  color: var(--secondary);
+  background-color: var(--tertiary);
+  animation: ease 1s;
+}
+
+.btn:hover {
+  background-color: var(--tertiary);
+}
+
+.hero {
+  background-image: url("./assets/hero2.png");
+  background-size: cover;
+}
+
+.link {
+  padding: var(--ppad);
+}
