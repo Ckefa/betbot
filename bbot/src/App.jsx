@@ -7,6 +7,8 @@ import { Routes, Route } from "react-router-dom";
 import { Layout } from "antd";
 import { useState } from "react";
 
+const host = "/";
+
 class Customer {
   constructor(name = null, bal = 0.0) {
     this.name = name;
@@ -22,9 +24,8 @@ function App() {
   const [user, setUser] = useState(new Customer());
   const [bal, setBal] = useState(user.bal);
   const { Header, Content } = Layout;
-  const host = "/";
 
-  console.log("APlication rendered.");
+  console.log("APlication rendering.....");
 
   return (
     <Layout className="min-h-screen bg-[var(--primary)] text-white">

@@ -30,21 +30,21 @@ function Home() {
           gap-[var(--sgap)] text-[var(--secondary)]"
           >
             <Link
-              to="/register"
+              to="/signup"
               className="link rounded-xl bg-[var(--important)] border
                border-[var(--tertiary)] text-[20px]"
             >
               join now
             </Link>
             <Link
-              to="/sigin"
+              to="/login"
               className="link rounded-xl text-[20px] text-white border
                border-[var(--tertiary)]"
             >
               sign in
             </Link>
             <Link
-              to="vfl"
+              to="/vfl"
               className="link rounded-xl text-[20px] text-white border
                border-[var(--tertiary)]"
             >
@@ -111,17 +111,12 @@ function Home() {
               <a
                 className="text-lime-400"
                 href="https://www.linkedin.com/in/clintonkefa/"
-                target="_blank"
               >
                 my LinkedIn handle
               </a>
             </li>
             <li>
-              <a
-                className="text-lime-400"
-                href="https://github.com/Ckefa"
-                target="_blank"
-              >
+              <a className="text-lime-400" href="https://github.com/Ckefa">
                 my GitHub handle
               </a>
             </li>
@@ -129,7 +124,6 @@ function Home() {
               <a
                 className="text-lime-400"
                 href="https://twitter.com/clintonkefa65"
-                target="_blank"
               >
                 my Twitter handle
               </a>
