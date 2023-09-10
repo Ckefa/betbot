@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, Navigate } from "react-router-dom";
-import { Form, Input, Button } from "@/components/ui";
+import { Input, Button } from "@/components/ui";
+import { Form } from "antd";
 
 function Signup({ host }) {
   const [redirect, setRedirect] = useState(false);
@@ -28,53 +29,57 @@ function Signup({ host }) {
   }
 
   return (
-    <Form
-      layout="vertical"
-      onFinish={submit}
-      className="flex flex-col items-center w-[40vw] mx-auto 
-      mt-10 rounded-2xl border border-gray-400 shadow-2xl"
-    >
-      <div className="mt-4 text-2xl m-4">
-        Please fill in the details below to Register.
-      </div>
-      <Form.Item
-        label="Email"
-        name="email"
-        className="mt-4"
-        rules={[{ required: true, message: "Please fill your email!!." }]}
+    <div className="min-h-[80vh] flex">
+      <Form
+        layout="vertical"
+        onFinish={submit}
+        className="my-auto flex flex-col items-center w-[40vw] mx-auto gap-4 
+      rounded-2xl border border-foreground  shadow-2xl text-foreground"
       >
-        <Input allowClear />
-      </Form.Item>
-      <Form.Item
-        label="Password"
-        name="pass1"
-        className=""
-        rules={[{ required: true, message: "Please fill your Password!!" }]}
-      >
-        <Input.Password allowClear />
-      </Form.Item>
+        <div className="mt-10 text-2xl">Login to place your bets.</div>
+        <Form.Item
+          name="email"
+          className="text-foreground"
+          rules={[{ required: true, message: "Please fill your email!!." }]}
+        >
+          <div>Email</div>
+          <Input allowClear className="border border-foreground" />
+        </Form.Item>
+        <Form.Item
+          name="password"
+          className="text-foreground"
+          rules={[{ required: true, message: "Please fill your Password!!" }]}
+        >
+          <div>Password</div>
+          <Input allowClear className="border border-foreground" />
+        </Form.Item>
+        <Form.Item
+          name="cpassword"
+          className="text-foreground"
+          rules={[{ required: true, message: "Please repeat your Password!!" }]}
+        >
+          <div>Confirm your password</div>
+          <Input allowClear className="border border-foreground" />
+        </Form.Item>
 
-      <Form.Item
-        label="Confirm Password"
-        name="pass2"
-        className=""
-        rules={[{ required: true, message: "Please confirm your Password!!" }]}
-      >
-        <Input.Password allowClear />
-      </Form.Item>
+        <Form.Item>
+          <Button htmlType="submit">Sign Up</Button>
+        </Form.Item>
 
-      <Form.Item>
-        <Button htmlType="submit" className="bg-lime-400 text-center">
-          Register
-        </Button>
-      </Form.Item>
-      <Form.Item>
-        <Link to="/login" className="flex gap-4">
-          <div>I have an account, </div>
-          <Button className="bg-blue-300">sign in</Button>
-        </Link>
-      </Form.Item>
-    </Form>
+        <Form.Item className="text-foreground">
+          <Link to="/login">
+            <span>I have an account: </span>
+            <Button
+              variant="outline"
+              size="sm"
+              className="border border-foreground "
+            >
+              login
+            </Button>
+          </Link>
+        </Form.Item>
+      </Form>
+    </div>
   );
 }
 
