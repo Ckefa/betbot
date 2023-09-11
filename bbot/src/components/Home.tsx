@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui";
-import { hero1, hero2, hero3, hero4 } from "../assets";
+import { hero1, hero2 } from "@/assets";
 import { Link } from "react-router-dom";
 
 function Home() {

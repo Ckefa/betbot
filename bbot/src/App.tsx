@@ -2,9 +2,12 @@ import { Navbar, Home, Login, Signup, Vfl } from "@/components";
 import { Routes, Route } from "react-router-dom";
 import { useState } from "react";
 
-const host = "/";
+const host = "http://localhost/";
 
 class Customer {
+  name: string | null;
+  bal: number;
+
   constructor(name = null, bal = 0.0) {
     this.name = name;
     this.bal = bal;

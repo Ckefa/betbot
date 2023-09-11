@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { Button } from "@/components/ui";
+import { Button, Sheet, SheetContent, SheetTrigger } from "@/components/ui";
 import { MoonIcon, SunIcon } from "@radix-ui/react-icons";
-import { User } from "lucide-react";
+import { MenuIcon, User } from "lucide-react";
 // import { logo } from "../assets";
 
 function Navbar({ host, user, setBal }) {
@@ -54,28 +54,53 @@ function Navbar({ host, user, setBal }) {
   ];
 
   return (
-    <nav className="flex justify-around items-center">
+    <div className="flex items-center justify-between">
+      <Sheet>
+        <SheetTrigger>
+          <MenuIcon className="md:hidden" />
+        </SheetTrigger>
+
+        <SheetContent side="left">
+          <nav>
+            <ul className="flex flex-col gap-4 items-center">
+              {menuItems.map((item) => (
+                <li key={item.text}>
+                  <a href={item.to}>{item.text}</a>
+                </li>
+              ))}
+              <li className="">
+                <Button>
+                  <Link to={"/signup"}>join now</Link>
+                </Button>
+              </li>
+            </ul>
+          </nav>
+        </SheetContent>
+      </Sheet>
+
       <div className=" font-bold">BETBOT</div>
 
-      <ul className="flex gap-4 items-center">
-        {menuItems.map((item) => (
-          <li key={item.text}>
-            <Link to={item.to}>{item.text}</Link>
+      <nav className="hidden md:flex">
+        <ul className="flex gap-4 items-center">
+          {menuItems.map((item) => (
+            <li key={item.text}>
+              <Link to={item.to}>{item.text}</Link>
+            </li>
+          ))}
+          <li className="">
+            <Button>
+              <Link to={"/signup"}>join now</Link>
+            </Button>
           </li>
-        ))}
-        <li className="">
-          <Button>
-            <Link to={"/signup"}>join now</Link>
-          </Button>
-        </li>
-      </ul>
-      <div className="flex gap-4 items-center">
+        </ul>
+      </nav>
+      <div className="flex gap-4 items-center pr-8">
         <User className="" />
         <Button variant="ghost" onClick={changeTheme}>
           {theme ? <MoonIcon /> : <SunIcon />}
         </Button>
       </div>
-    </nav>
+    </div>
   );
 }
 export default Navbar;

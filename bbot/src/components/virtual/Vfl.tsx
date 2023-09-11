@@ -4,19 +4,28 @@ import { Button, Card, Input } from "@/components/ui";
 
 const MemodResults = memo(Results);
 const MemodGame = memo(Game);
+type parVal = {
+  host: string;
+  user: {
+    name: string;
+    bal: number;
+    checkBalance: () => void;
+  };
+  setBal: (bal: number) => void;
+};
 
-function Vfl({ host, user, setBal }) {
+function Vfl({ host, user, setBal }: parVal) {
   const [data, setData] = useState([]);
   const [results, setRes] = useState([]);
   const [md, setMd] = useState("");
   const [stable, setShow] = useState(true);
   const [table, setTable] = useState([]);
   const [done, setDone] = useState("");
-  const [slip, setSlip] = useState([]);
+  const [slip, setSlip] = useState<string[]>([]);
   const [sslip, setSslip] = useState(false);
-  const [odds, setOdd] = useState(0.0);
+  const [odds, setOdd] = useState<number>(0);
   const [stake, setStake] = useState(10);
-  const [intervalid, setIntervalid] = useState(null);
+  const [intervalid, setIntervalid] = useState<NodeJS.Timeout | null>();
   const [timer, setTimer] = useState(30);
   const [change, setChange] = useState(false);
 
@@ -29,7 +38,7 @@ function Vfl({ host, user, setBal }) {
   //console.log("Vfl rendered: ", timer);
 
   useEffect(() => {
-    let intervals = setInterval(() => {
+    const intervals = setInterval(() => {
       setTimer((prev) => prev - 1);
     }, 1000);
 
@@ -55,23 +64,26 @@ function Vfl({ host, user, setBal }) {
       });
 
     if (done !== md) {
-      update();
+      update(null);
     }
   }, [change]);
 
   //useEffect(() => console.log(slip), [slip]);
   useEffect(() => {
     setBal(0);
-    const temp = JSON.parse(localStorage.getItem("slip"));
-    update(temp);
-    setSlip(temp);
+    const rawTemp: string | null = localStorage.getItem("slip");
+    if (rawTemp) {
+      const temp: string[] = JSON.parse(rawTemp);
+      update(temp);
+      setSlip(temp);
+    }
   }, []);
 
   useEffect(() => {
     localStorage.setItem("slip", JSON.stringify(slip));
   }, [slip]);
 
-  async function update(temp) {
+  async function update(temp: string[]) {
     const tb = await fetch(`${host}results`);
     const res = await tb.json();
     setRes(res.results);
@@ -89,12 +101,7 @@ function Vfl({ host, user, setBal }) {
     setSslip(!sslip);
   };
 
-  const saveSlip = () => {
-    const temp = JSON.parse(localStorage.getItem("slip"));
-    setSlip(temp);
-  };
-
-  function addSelect(r) {
+  function addSelect(r: string[]) {
     const st = slip.indexOf(r[0]) === -1;
     const st2 = slip.indexOf(r[1]) === -1;
     const sts = st && st2;
@@ -104,16 +111,16 @@ function Vfl({ host, user, setBal }) {
         return [...new_list, r[0]];
       });
       if (sts) {
-        setOdd((prev) => {
-          let num = parseFloat(prev) + 0.55;
-          return num.toFixed(2);
+        setOdd((prev: number) => {
+          const num = prev + 0.55;
+          return parseFloat(num.toFixed(2));
         });
       }
     } else {
       setSlip((prev) => prev.filter((n) => n !== r[0]));
-      setOdd((prev) => {
-        let num = prev - 0.55;
-        return num.toFixed(2);
+      setOdd((prev: number) => {
+        const num = prev - 0.55;
+        return parseFloat(num.toFixed(2));
       });
     }
     //console.log(r);
@@ -126,7 +133,6 @@ function Vfl({ host, user, setBal }) {
     else {
       user.bal -= stake;
       setBal(user.bal);
-      setTable(user.bal);
       fetch(`${host}place`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },

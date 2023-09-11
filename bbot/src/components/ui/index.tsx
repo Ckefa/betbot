@@ -1,6 +1,6 @@
 import { Button } from "./button";
 import { Card } from "./card";
-import { Form } from "./form";
+import { Sheet, SheetTrigger, SheetContent } from "./sheet";
 import { Input } from "./input";
 
-export { Button, Card, Form, Input };
+export { Button, Card, Sheet, SheetTrigger, SheetContent, Input };
