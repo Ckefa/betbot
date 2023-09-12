@@ -22,9 +22,9 @@ function Game({ params }: parVal) {
   };
 
   return (
-    <div className="p-4 h-80 flex flex-col justify-between">
+    <div className="mx-auto flex flex-col gap-8 p-4">
       {data?.map((fix, index) => (
-        <div key={index} className="flex justify-center gap-[8rem]">
+        <div className="flex justify-center gap-12" key={index}>
           <div id={fix[0]} onClick={() => select(fix[0], fix[1])}>
             {fix[0]}
           </div>

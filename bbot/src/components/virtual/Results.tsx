@@ -18,7 +18,7 @@ function Results({ params }: parVal) {
         </div>
         <div className="h-80 pt-4 flex flex-col justify-between">
           {results?.map((res, index) => (
-            <div className="flex justify-around" key={index}>
+            <div className="flex justify-center gap-4" key={index}>
               <div>{res[0][0]}</div>
               <div className="text-blue-300 text-lg">{res[0][1]}</div>
               <div>-</div>

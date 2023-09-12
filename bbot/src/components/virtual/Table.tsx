@@ -6,8 +6,8 @@ type parVal = {
 
 function Table(T: parVal) {
   return (
-    <Card className="border-[5px] border-blue-300 shadow-lg">
-      <div className="bg-blue-300">
+    <Card className="border border-blue-300 shadow-lg">
+      <div className="mx-auto p-2 grid grid-cols-6 gap-4 bg-blue-300">
         <div>Team</div>
         <div>Pts</div>
         <div>Gpl</div>
@@ -16,10 +16,10 @@ function Table(T: parVal) {
         <div>lose</div>
       </div>
       {T.tb?.map((t, index) => (
-        <div key={index} className="">
+        <div key={index} className="mx-auto grid grid-cols-6 gap-4">
           {t.map((z, index) => (
             <div key={index}>
-              <div className="mx-auto">{z}</div>
+              <div>{z}</div>
             </div>
           ))}
         </div>

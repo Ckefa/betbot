@@ -26,10 +26,10 @@ function Home() {
             <Button>
               <Link to="/signup">join now</Link>
             </Button>
-            <Button variant="outline">
+            <Button variant="outline" className="border border-primary">
               <Link to="/login">sign in</Link>
             </Button>
-            <Button variant="outline">
+            <Button variant="outline" className="border border-primary">
               <Link to="/vfl">play now</Link>
             </Button>
           </div>

@@ -141,18 +141,22 @@ function Vfl({ host, user }: parVal) {
   return (
     <div>
       <div className="pt-8 flex flex-col gap-8">
-        <div className="flex justify-around">
+        <div className="flex justify-center items-center gap-16">
           <div>
             <div className="text-3xl text-blalck-900">VIRTUAL EPL GAMES</div>
           </div>
           {/*------- toggle buttons ---------*/}
           <div>
-            <Card className="bg-gray-400">
-              <div>
-                <Button onClick={toggleTable} className="bg-lime-400">
+            <Card className="mr-auto p-1 bg-gray-400">
+              <div className="flex gap-4">
+                <Button onClick={toggleTable} variant="outline" className="">
                   {stable ? "hide" : "table"}
                 </Button>
-                <Button onClick={toggleSlip} className="bg-yellow-400">
+                <Button
+                  onClick={toggleSlip}
+                  variant="outline"
+                  className="bg-yellow-400"
+                >
                   {sslip ? "hide slip" : "bet slip"}
                 </Button>
               </div>
@@ -201,7 +205,7 @@ function Vfl({ host, user }: parVal) {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-3 gap-4">
           <div>
             <Card className="bg-black text-white shadow-lg">
               <div className="text-xl text-center">
@@ -213,13 +217,11 @@ function Vfl({ host, user }: parVal) {
             </Card>
           </div>
 
-          <div className="flex flex-col lg:flex-row gap-8 lg:gap-4">
-            <div>
-              {/*------- Results --------*/}
-              <MemodResults params={resParams} />
-            </div>
-            {stable && <div>{stable && <Table tb={table} />}</div>}
+          <div>
+            {/*------- Results --------*/}
+            <MemodResults params={resParams} />
           </div>
+          {stable && <div>{stable && <Table tb={table} />}</div>}
         </div>
       </div>
     </div>

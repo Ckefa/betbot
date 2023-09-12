@@ -31,9 +31,9 @@ type respD = {
 };
 
 function Navbar({ host, user }: parVal) {
-  console.log("Navbar rendered...", user.bal);
-
   const [theme, setTheme] = useState<boolean>(true);
+
+  console.log("Navbar rendered...", user.bal);
 
   const changeTheme = () => {
     const app = document.querySelector(".app");
@@ -87,7 +87,9 @@ function Navbar({ host, user }: parVal) {
             <ul className="flex flex-col gap-4 items-center">
               {menuItems.map((item) => (
                 <li key={item.text}>
-                  <a href={item.to}>{item.text}</a>
+                  <Button variant="ghost">
+                    <Link to={item.to}>{item.text}</Link>
+                  </Button>
                 </li>
               ))}
               <li className="">
