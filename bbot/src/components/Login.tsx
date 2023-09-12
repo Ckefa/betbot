@@ -1,14 +1,23 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Navigate, Link } from "react-router-dom";
 import { Input, Button } from "@/components/ui";
 import { Form } from "antd";
 
-function Login({ host, setBal }) {
+type parVal = {
+  host: string;
+};
+
+type subD = {
+  name: string | null;
+  password: string | null;
+};
+
+function Login({ host }: parVal) {
   const [redirect, setRedirect] = useState(false);
 
   console.log("Login Rendered......");
 
-  const submit = (values) => {
+  const submit = (values: subD) => {
     fetch(`${host}login`, {
       method: "POST",
       headers: {
@@ -20,7 +29,6 @@ function Login({ host, setBal }) {
       .then((resp) => {
         console.log(resp);
         if (resp.resp.includes("success")) {
-          setBal(null);
           setRedirect(!redirect);
         }
       });
@@ -45,7 +53,7 @@ function Login({ host, setBal }) {
           rules={[{ required: true, message: "Please fill your email!!." }]}
         >
           <div>Email</div>
-          <Input allowClear className="border border-foreground" />
+          <Input className="border border-foreground" />
         </Form.Item>
         <Form.Item
           name="password"
@@ -53,10 +61,10 @@ function Login({ host, setBal }) {
           rules={[{ required: true, message: "Please fill your Password!!" }]}
         >
           <div>Password</div>
-          <Input allowClear className="border border-foreground" />
+          <Input className="border border-foreground" />
         </Form.Item>
         <Form.Item>
-          <Button htmlType="submit">Login</Button>
+          <Button type="submit">Login</Button>
         </Form.Item>
 
         <Form.Item className="text-foreground">

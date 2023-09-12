@@ -1,5 +1,5 @@
 import { Game, Results, Table } from "@/components/virtual";
-import React, { memo, useState, useEffect, useMemo } from "react";
+import { memo, useState, useEffect, useMemo } from "react";
 import { Button, Card, Input } from "@/components/ui";
 
 const MemodResults = memo(Results);
@@ -7,14 +7,13 @@ const MemodGame = memo(Game);
 type parVal = {
   host: string;
   user: {
-    name: string;
+    name: string | null;
     bal: number;
     checkBalance: () => void;
   };
-  setBal: (bal: number) => void;
 };
 
-function Vfl({ host, user, setBal }: parVal) {
+function Vfl({ host, user }: parVal) {
   const [data, setData] = useState([]);
   const [results, setRes] = useState([]);
   const [md, setMd] = useState("");
@@ -24,16 +23,13 @@ function Vfl({ host, user, setBal }: parVal) {
   const [slip, setSlip] = useState<string[]>([]);
   const [sslip, setSslip] = useState(false);
   const [odds, setOdd] = useState<number>(0);
-  const [stake, setStake] = useState(10);
-  const [intervalid, setIntervalid] = useState<NodeJS.Timeout | null>();
+  const [stake, setStake] = useState<number>(10);
+  const [intervalid, setIntervalid] = useState<NodeJS.Timeout | null>(null);
   const [timer, setTimer] = useState(30);
   const [change, setChange] = useState(false);
 
   const resParams = useMemo(() => ({ md, results }), [md]);
-  const gameParams = useMemo(
-    () => ({ md, data, addSelect, timer, slip }),
-    [md]
-  );
+  const gameParams = useMemo(() => ({ data, addSelect, timer, slip }), [md]);
 
   //console.log("Vfl rendered: ", timer);
 
@@ -48,7 +44,7 @@ function Vfl({ host, user, setBal }: parVal) {
 
   useEffect(() => {
     if (timer <= 0) {
-      clearInterval(intervalid);
+      if (intervalid) clearInterval(intervalid);
       setChange(!change);
     }
   }, [timer]);
@@ -70,7 +66,6 @@ function Vfl({ host, user, setBal }: parVal) {
 
   //useEffect(() => console.log(slip), [slip]);
   useEffect(() => {
-    setBal(0);
     const rawTemp: string | null = localStorage.getItem("slip");
     if (rawTemp) {
       const temp: string[] = JSON.parse(rawTemp);
@@ -83,7 +78,7 @@ function Vfl({ host, user, setBal }: parVal) {
     localStorage.setItem("slip", JSON.stringify(slip));
   }, [slip]);
 
-  async function update(temp: string[]) {
+  async function update(temp: string[] | null) {
     const tb = await fetch(`${host}results`);
     const res = await tb.json();
     setRes(res.results);
@@ -132,7 +127,6 @@ function Vfl({ host, user, setBal }: parVal) {
       alert("Insufficient balance please top up your account.");
     else {
       user.bal -= stake;
-      setBal(user.bal);
       fetch(`${host}place`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -190,9 +184,8 @@ function Vfl({ host, user, setBal }: parVal) {
                       <Input
                         value={stake}
                         type="number"
-                        onChange={(e) => setStake(e.target.value)}
+                        onChange={(e) => setStake(parseFloat(e.target.value))}
                         className="flex-1"
-                        allowClear
                       />
                       <Button
                         onClick={processBet}

@@ -1,14 +1,24 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link, Navigate } from "react-router-dom";
 import { Input, Button } from "@/components/ui";
 import { Form } from "antd";
 
-function Signup({ host }) {
+type parVal = {
+  host: string;
+};
+
+type subVal = {
+  email: string;
+  password: string;
+  cpassword: string;
+};
+
+function Signup({ host }: parVal) {
   const [redirect, setRedirect] = useState(false);
 
   console.log("Registration  Rendered....");
 
-  async function submit() {
+  async function submit(values: subVal) {
     const resp = await fetch(`${host}signup`, {
       method: "POST",
       headers: {
@@ -43,7 +53,7 @@ function Signup({ host }) {
           rules={[{ required: true, message: "Please fill your email!!." }]}
         >
           <div>Email</div>
-          <Input allowClear className="border border-foreground" />
+          <Input className="border border-foreground" />
         </Form.Item>
         <Form.Item
           name="password"
@@ -51,7 +61,7 @@ function Signup({ host }) {
           rules={[{ required: true, message: "Please fill your Password!!" }]}
         >
           <div>Password</div>
-          <Input allowClear className="border border-foreground" />
+          <Input className="border border-foreground" />
         </Form.Item>
         <Form.Item
           name="cpassword"
@@ -59,11 +69,11 @@ function Signup({ host }) {
           rules={[{ required: true, message: "Please repeat your Password!!" }]}
         >
           <div>Confirm your password</div>
-          <Input allowClear className="border border-foreground" />
+          <Input className="border border-foreground" />
         </Form.Item>
 
         <Form.Item>
-          <Button htmlType="submit">Sign Up</Button>
+          <Button type="submit">Sign Up</Button>
         </Form.Item>
 
         <Form.Item className="text-foreground">

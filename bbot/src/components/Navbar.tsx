@@ -1,11 +1,36 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { Button, Sheet, SheetContent, SheetTrigger } from "@/components/ui";
+import {
+  Button,
+  Sheet,
+  SheetContent,
+  SheetTrigger,
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+} from "@/components/ui";
 import { MoonIcon, SunIcon } from "@radix-ui/react-icons";
 import { MenuIcon, User } from "lucide-react";
 // import { logo } from "../assets";
 
-function Navbar({ host, user, setBal }) {
+type parVal = {
+  host: string;
+  user: {
+    name: string | null;
+    bal: number | null;
+    checkBalance: () => void;
+  };
+};
+
+type respD = {
+  name: string | null;
+  balance: number;
+};
+
+function Navbar({ host, user }: parVal) {
   console.log("Navbar rendered...", user.bal);
 
   const [theme, setTheme] = useState<boolean>(true);
@@ -22,17 +47,15 @@ function Navbar({ host, user, setBal }) {
       .then((r) => update(r));
   }, []);
 
-  const update = (data) => {
+  const update = (data: respD) => {
     console.log("this is the data", data);
     if (data.name) {
       user.name = data.name;
       user.bal = data.balance;
-      setBal(user.bal);
       //console.log(user);
     } else {
-      //user.name = "clinton";
-      //user.bal = 1234.56;
-      //(user.bal);
+      user.name = "clinton";
+      user.bal = 1234.56;
       console.log("Errer getting user details.");
     }
   };
@@ -44,7 +67,6 @@ function Navbar({ host, user, setBal }) {
         console.log(resp);
         user.bal = null;
         user.name = null;
-        setBal(null);
       });
 
   const menuItems = [
@@ -95,7 +117,30 @@ function Navbar({ host, user, setBal }) {
         </ul>
       </nav>
       <div className="flex gap-4 items-center pr-8">
-        <User className="" />
+        <DropdownMenu>
+          <DropdownMenuTrigger>
+            <User />
+          </DropdownMenuTrigger>
+
+          <DropdownMenuContent>
+            <DropdownMenuLabel>my account</DropdownMenuLabel>
+
+            <DropdownMenuSeparator />
+
+            <DropdownMenuItem>name: {user.name}</DropdownMenuItem>
+
+            <DropdownMenuSeparator />
+
+            <DropdownMenuItem>bal: {user.bal}</DropdownMenuItem>
+
+            <DropdownMenuItem>
+              <Button className="w-full h-5" onClick={logout}>
+                log out
+              </Button>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+
         <Button variant="ghost" onClick={changeTheme}>
           {theme ? <MoonIcon /> : <SunIcon />}
         </Button>

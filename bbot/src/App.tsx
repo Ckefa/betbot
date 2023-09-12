@@ -1,6 +1,6 @@
 import { Navbar, Home, Login, Signup, Vfl } from "@/components";
 import { Routes, Route } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const host = "http://localhost/";
 
@@ -13,34 +13,30 @@ class Customer {
     this.bal = bal;
   }
 
-  checkBalance() {
+  checkBalance(): void {
     console.log(this.name, this.bal);
   }
 }
 
 function App() {
-  const [user, setUser] = useState(new Customer());
+  const [user] = useState<Customer>(new Customer());
   const [bal, setBal] = useState(user.bal);
 
-  console.log("APlication rendering.....");
+  useEffect(() => setBal(user.bal), [user.bal]);
+
+  console.log("APlication rendering.....", bal);
 
   return (
     <div className="app container min-h-screen light bg-background text-foreground">
       <header className="h-8 pt-4">
-        <Navbar host={host} user={user} bal={bal} setBal={setBal} />
+        <Navbar host={host} user={user} />
       </header>
 
       <div className="mt-8">
         <Routes>
-          <Route exact path="/" element={<Home />} />
-          <Route
-            path="/login"
-            element={<Login host={host} setBal={setBal} />}
-          />
-          <Route
-            path="/vfl"
-            element={<Vfl host={host} user={user} setBal={setBal} />}
-          />
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login host={host} />} />
+          <Route path="/vfl" element={<Vfl host={host} user={user} />} />
           <Route path="/signup" element={<Signup host={host} />} />
         </Routes>
       </div>
