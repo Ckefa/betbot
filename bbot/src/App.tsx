@@ -2,7 +2,7 @@ import { Navbar, Home, Login, Signup, Vfl } from "@/components";
 import { Routes, Route } from "react-router-dom";
 import { useEffect, useState } from "react";
 
-const host = "http://localhost/";
+const host = "/";
 
 class Customer {
   name: string | null;
@@ -27,7 +27,7 @@ function App() {
   console.log("APlication rendering.....", bal);
 
   return (
-    <div className="app container min-h-screen light bg-background text-foreground">
+    <div className="app lg:container min-h-screen light bg-background text-foreground">
       <header className="h-8 pt-4">
         <Navbar host={host} user={user} />
       </header>
