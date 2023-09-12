@@ -16,7 +16,7 @@ type parVal = {
 function Vfl({ host, user }: parVal) {
   const [data, setData] = useState([]);
   const [results, setRes] = useState([]);
-  const [md, setMd] = useState("");
+  const [md, setMd] = useState<string>("");
   const [stable, setShow] = useState(true);
   const [table, setTable] = useState([]);
   const [done, setDone] = useState("");
@@ -28,7 +28,7 @@ function Vfl({ host, user }: parVal) {
   const [timer, setTimer] = useState(30);
   const [change, setChange] = useState(false);
 
-  const resParams = useMemo(() => ({ md, results }), [md]);
+  const resParams = useMemo(() => ({ md, results }), [md, results]);
   const gameParams = useMemo(() => ({ data, addSelect, timer, slip }), [md]);
 
   //console.log("Vfl rendered: ", timer);
@@ -79,8 +79,8 @@ function Vfl({ host, user }: parVal) {
   }, [slip]);
 
   async function update(temp: string[] | null) {
-    const tb = await fetch(`${host}results`);
-    const res = await tb.json();
+    const resData = await fetch(`${host}results`);
+    const res = await resData.json();
     setRes(res.results);
     setTable(res.table);
     setDone(md);
@@ -140,8 +140,8 @@ function Vfl({ host, user }: parVal) {
 
   return (
     <div>
-      <div>
-        <div className="m-3 justify-around items-center">
+      <div className="pt-8 flex flex-col gap-8">
+        <div className="flex justify-around">
           <div>
             <div className="text-3xl text-blalck-900">VIRTUAL EPL GAMES</div>
           </div>
@@ -201,23 +201,25 @@ function Vfl({ host, user }: parVal) {
           </div>
         </div>
 
-        <div className="flex justify-around">
+        <div className="grid grid-cols-2 gap-4">
           <div>
             <Card className="bg-black text-white shadow-lg">
-              <div className="text-xl text-lime-300">
+              <div className="text-xl text-center">
                 Matchday {md} Starts in: {timer}
               </div>
+
               {/* ---------- fixtures -----------*/}
               <MemodGame params={gameParams} />
             </Card>
           </div>
 
-          <div>
-            {/*------- Results --------*/}
-            <MemodResults params={resParams} />
+          <div className="flex flex-col lg:flex-row gap-8 lg:gap-4">
+            <div>
+              {/*------- Results --------*/}
+              <MemodResults params={resParams} />
+            </div>
+            {stable && <div>{stable && <Table tb={table} />}</div>}
           </div>
-
-          {stable && <div>{stable && <Table tb={table} />}</div>}
         </div>
       </div>
     </div>

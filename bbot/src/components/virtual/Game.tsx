@@ -1,5 +1,5 @@
 type parVal = {
-  params: { md: string; data: string[]; addSelect: (r: string[]) => void };
+  params: { data: string[]; addSelect: (r: string[]) => void };
 };
 
 function Game({ params }: parVal) {
@@ -22,9 +22,9 @@ function Game({ params }: parVal) {
   };
 
   return (
-    <div className="m-2 h-80 flex flex-col justify-between">
+    <div className="p-4 h-80 flex flex-col justify-between">
       {data?.map((fix, index) => (
-        <div key={index} className="flex justify-between">
+        <div key={index} className="flex justify-center gap-[8rem]">
           <div id={fix[0]} onClick={() => select(fix[0], fix[1])}>
             {fix[0]}
           </div>
