@@ -2,8 +2,6 @@ import { Game, Results, Table } from "@/components/virtual";
 import { memo, useState, useEffect, useMemo } from "react";
 import { Button, Card, Input } from "@/components/ui";
 import { Divider } from "antd";
-import { Link, Route, Routes } from "react-router-dom";
-import { ActivitySquare } from "lucide-react";
 
 const MemodResults = memo(Results);
 const MemodGame = memo(Game);
