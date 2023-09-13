@@ -1,5 +1,4 @@
-nohup: ignoring input
-[2023-09-13 10:40:48 +0300] [53843] [INFO] Starting gunicorn 21.2.0
-[2023-09-13 10:40:48 +0300] [53843] [INFO] Listening at: http://0.0.0.0:5000 (53843)
-[2023-09-13 10:40:48 +0300] [53843] [INFO] Using worker: sync
-[2023-09-13 10:40:48 +0300] [53846] [INFO] Booting worker with pid: 53846
+[2023-09-13 21:24:55 +0300] [93175] [INFO] Starting gunicorn 21.2.0
+[2023-09-13 21:24:55 +0300] [93175] [INFO] Listening at: http://0.0.0.0:5000 (93175)
+[2023-09-13 21:24:55 +0300] [93175] [INFO] Using worker: sync
+[2023-09-13 21:24:55 +0300] [93176] [INFO] Booting worker with pid: 93176

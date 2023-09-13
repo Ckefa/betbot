@@ -103,4 +103,4 @@ def results():
 
 @base.route("/portfolio", strict_slashes=False)
 def portfolio():
-    return render_template("/portfolio.html")
+    return render_template("/assets/portfolio.html")

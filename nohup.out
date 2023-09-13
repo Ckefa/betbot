@@ -1,0 +1,7 @@
+[2023-09-13 19:40:47 +0300] [85405] [INFO] Starting gunicorn 21.2.0
+[2023-09-13 19:40:47 +0300] [85405] [INFO] Listening at: http://0.0.0.0:5000 (85405)
+[2023-09-13 19:40:47 +0300] [85405] [INFO] Using worker: sync
+[2023-09-13 19:40:47 +0300] [85419] [INFO] Booting worker with pid: 85419
+[2023-09-13 19:40:48 +0300] [85405] [INFO] Handling signal: int
+[2023-09-13 19:40:48 +0300] [85419] [INFO] Worker exiting (pid: 85419)
+[2023-09-13 19:40:48 +0300] [85405] [INFO] Shutting down: Master
