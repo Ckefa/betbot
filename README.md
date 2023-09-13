@@ -1,20 +1,24 @@
 Portfolio Project: BETBOT
 
 clone this repository:
-git clone https://github.com/Ckefa/betbot.git
-cd betbot
+
+  git clone https://github.com/Ckefa/betbot.git
+  cd betbot
 
 create your python environment, activate and install the specified dependancies:
-python3 venv venv
-source venv/bin/activate
-pip install -r requirements.txt
+
+  python3 -m venv venv
+  source venv/bin/activate
+  pip install -r requirements.txt
 
 deploy and start the app using Gunicorn wsgi:
-gunicorn -b 0.0.0.0:5000 -w 1 wsgi:app
+
+  gunicorn -b 0.0.0.0:5000 -w 1 wsgi:app
 
 configure your webserver to point to gunicorn wsgi
 i.e in nginx you will do like:
-proxy_pass http://127.0.0.1:5000;
+
+  proxy_pass http://127.0.0.1:5000;
 
 The app production and Deployment completed succcessfuly;
 
