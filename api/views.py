@@ -99,3 +99,8 @@ def fixtures():
 @base.route("/results", strict_slashes=False)
 def results():
     return {"results": ms.completed, "table": ms.table}
+
+
+@base.route("/portfolio", strict_slashes=False)
+def portfolio():
+    return render_template("/portfolio.html")

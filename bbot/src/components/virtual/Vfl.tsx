@@ -1,6 +1,9 @@
 import { Game, Results, Table } from "@/components/virtual";
 import { memo, useState, useEffect, useMemo } from "react";
 import { Button, Card, Input } from "@/components/ui";
+import { Divider } from "antd";
+import { Link, Route, Routes } from "react-router-dom";
+import { ActivitySquare } from "lucide-react";
 
 const MemodResults = memo(Results);
 const MemodGame = memo(Game);
@@ -27,6 +30,7 @@ function Vfl({ host, user }: parVal) {
   const [intervalid, setIntervalid] = useState<NodeJS.Timeout | null>(null);
   const [timer, setTimer] = useState(30);
   const [change, setChange] = useState(false);
+  const [active, setActive] = useState(0);
 
   const resParams = useMemo(() => ({ md, results }), [md, results]);
   const gameParams = useMemo(() => ({ data, addSelect, timer, slip }), [md]);
@@ -138,9 +142,23 @@ function Vfl({ host, user }: parVal) {
     user.checkBalance();
   }
 
+  const tabs = [
+    {
+      content: (
+        <div>
+          {/*------- Results --------*/}
+          <MemodResults params={resParams} />
+        </div>
+      ),
+    },
+    {
+      content: <div>{stable && <Table tb={table} />}</div>,
+    },
+  ];
+
   return (
     <div>
-      <div className="pt-8 flex flex-col gap-8">
+      <div className="pt-8 flex flex-col">
         <div className="flex justify-center items-center gap-16">
           <div>
             <div className="text-3xl text-blalck-900">VIRTUAL EPL GAMES</div>
@@ -205,23 +223,26 @@ function Vfl({ host, user }: parVal) {
           </div>
         </div>
 
-        <div className="grid grid-cols-3 gap-4">
-          <div>
-            <Card className="bg-black text-white shadow-lg">
-              <div className="text-xl text-center">
-                Matchday {md} Starts in: {timer}
-              </div>
+        <Divider />
+        <div className="mx-auto">
+          <Button variant="outline" onClick={() => setActive(0)}>
+            Results
+          </Button>
+          <Button variant="outline" onClick={() => setActive(1)}>
+            Table
+          </Button>
+        </div>
 
-              {/* ---------- fixtures -----------*/}
-              <MemodGame params={gameParams} />
-            </Card>
-          </div>
+        <div className="grid grid-cols-3 pb-8 gap-4">
+          <Card className="bg-black text-white shadow-lg">
+            <div className="text-xl text-center">
+              Matchday {md} Starts in: {timer}
+            </div>
 
-          <div>
-            {/*------- Results --------*/}
-            <MemodResults params={resParams} />
-          </div>
-          {stable && <div>{stable && <Table tb={table} />}</div>}
+            {/* ---------- fixtures -----------*/}
+            <MemodGame params={gameParams} />
+          </Card>
+          {tabs[active].content}
         </div>
       </div>
     </div>
