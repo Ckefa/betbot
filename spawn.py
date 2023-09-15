@@ -9,5 +9,6 @@ if len(argv) > 1:
     run(f"sudo docker run -d --name {name} betbot".split())
     run(f"sudo docker cp . {name}:/app".split())
     run(f"sudo docker restart {name}".split())
+
 else:
     print("Please specify the name of your container")
