@@ -6,9 +6,9 @@ from subprocess import run
 if len(argv) > 1:
     name = argv[1]
     print(f"Creatintg {name} constainer")
-    run(f"sudo docker run -d --name {name} betbot".split())
-    run(f"sudo docker cp . {name}:/app".split())
-    run(f"sudo docker restart {name}".split())
+    run(f"docker run -d --name {name} betbot".split())
+    run(f"docker cp . {name}:/app".split())
+    run(f"docker restart {name}".split())
 
 else:
     print("Please specify the name of your container")
