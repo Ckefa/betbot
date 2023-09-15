@@ -3,4 +3,3 @@ flask
 pandas
 flask-sqlalchemy
 Flask-CORS
-Flask-Login
