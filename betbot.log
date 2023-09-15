@@ -2,3 +2,9 @@
 [2023-09-13 21:24:55 +0300] [93175] [INFO] Listening at: http://0.0.0.0:5000 (93175)
 [2023-09-13 21:24:55 +0300] [93175] [INFO] Using worker: sync
 [2023-09-13 21:24:55 +0300] [93176] [INFO] Booting worker with pid: 93176
+[2023-09-14 04:57:27 +0300] [93175] [CRITICAL] WORKER TIMEOUT (pid:93176)
+[2023-09-14 04:58:52 +0300] [93176] [INFO] Worker exiting (pid: 93176)
+[2023-09-14 04:59:18 +0300] [93175] [ERROR] Worker (pid:93176) was sent SIGKILL! Perhaps out of memory?
+[2023-09-14 04:59:18 +0300] [108297] [INFO] Booting worker with pid: 108297
+[2023-09-14 05:02:38 +0300] [108297] [INFO] Worker exiting (pid: 108297)
+[2023-09-14 05:02:38 +0300] [93175] [INFO] Handling signal: term
