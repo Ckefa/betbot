@@ -6,13 +6,18 @@ import json
 from time import sleep
 
 
+from os import environ
+
 HEADER = 64
 FORMAT = "utf-8"
 DISCONNECT = "quit"
 
 
 class Server:
-    HOST = "localhost"
+    if "SERVER" in environ:
+        HOST = environ["HOST"]
+    else:
+        HOST = "172.17.0.2"
     PORT = 5050
 
     def __init__(self):

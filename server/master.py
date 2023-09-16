@@ -11,7 +11,8 @@ from itertools import starmap
 
 
 class Timer:
-    # """Manages time for the program."""
+    """Manages time for the program."""
+
     count = 0
 
     def __init__(self, limit=30):
