@@ -4,7 +4,8 @@
 """This is Main APi endpoint server."""
 
 
-from api import base, ms, timer, db
+from api import base, db
+import client
 from flask import render_template, request, session
 
 
@@ -93,12 +94,18 @@ def status():
 
 @base.route("/fixtures", strict_slashes=False)
 def fixtures():
-    return {"fixtures": ms.ongoing, "x": timer.get_time(), "y": ms.md}
+    data = client.fetch()
+    return {
+        "fixtures": data.get("fixtures"),
+        "x": data.get("time"),
+        "y": data.get("md"),
+    }
 
 
 @base.route("/results", strict_slashes=False)
 def results():
-    return {"results": ms.completed, "table": ms.table}
+    data = client.fetch()
+    return {"results": data.get("results"), "table": data.get("table")}
 
 
 @base.route("/portfolio", strict_slashes=False)

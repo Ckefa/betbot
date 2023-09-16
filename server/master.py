@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 
-from api import virtual_football as vfl
+from server import virtual_football as vfl
 from threading import Thread
 from time import sleep
 from itertools import starmap
@@ -40,6 +40,7 @@ class Timer:
 
 class Master:
     """Controls the api."""
+
     md = 0
     epl, table = [], []
     cache, tcache = [], []
@@ -55,18 +56,20 @@ class Master:
         self.epl = self.league.fetch()
         if self.epl:
             self.md = self.epl.id + 1
-            self.ongoing = list(starmap(lambda x, y:
-								[x.name, y.name], self.epl.fixtures))
+            self.ongoing = list(
+                starmap(lambda x, y: [x.name, y.name], self.epl.fixtures)
+            )
             self.completed = self.cache
-            self.cache = [[[i[0][0], i[1][0]], [i[0][1], i[1][1]]]
-                          for i in zip(self.ongoing, self.epl.results)]
+            self.cache = [
+                [[i[0][0], i[1][0]], [i[0][1], i[1][1]]]
+                for i in zip(self.ongoing, self.epl.results)
+            ]
             self.table = self.tcache
             self.tcache = self.league.table.get_table()
 
         if self.md > 29:
             self.league.__init__()
             self.league.start()
-			
 
     def control(self):
         while True:
@@ -83,7 +86,7 @@ timer = Timer()
 
 
 if __name__ == "__main__":
-	timer = Timer()
-	ms = Master()
-	ms.run_games()
-	print(ms.ongoing)
+    timer = Timer()
+    ms = Master()
+    ms.run_games()
+    print(ms.ongoing)
