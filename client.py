@@ -17,7 +17,7 @@ class Server:
     if "SERVER" in environ:
         HOST = environ["HOST"]
     else:
-        HOST = "172.17.0.2"
+        HOST = "204.236.241.1"
     PORT = 5050
 
     def __init__(self):

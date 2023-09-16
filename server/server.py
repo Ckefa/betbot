@@ -9,8 +9,7 @@ from server.master import Master, timer
 
 
 ms = Master()
-HOST = "127.0.0.1"
-HOST = socket.gethostbyname(socket.gethostname())
+HOST = "204.236.241.1"
 PORT = 5050
 ADDR = (HOST, PORT)
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
