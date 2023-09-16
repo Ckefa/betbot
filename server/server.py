@@ -9,7 +9,6 @@ from server.master import Master, timer
 
 
 ms = Master()
-# exit()
 HOST = "127.0.0.1"
 HOST = socket.gethostbyname(socket.gethostname())
 PORT = 5050
