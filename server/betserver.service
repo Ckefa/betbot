@@ -1,0 +1,13 @@
+[Unit]
+Description=This is the betbot games app server for apis
+After=network.target
+
+[Service]
+User=www-data
+Group=www-data
+Environment="PATH=/venv/betbot/bin"
+WorkingDirectory=/home/ubuntu/betbot
+ExecStart=/venv/betbot/bin/python3 -m server.server
+
+[Install]
+WantedBy=muti-user.target

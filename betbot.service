@@ -1,0 +1,13 @@
+[Unit]
+Description=This is the main betbot web app server
+After=network.target
+
+[Service]
+User=www-data
+Group=www-data
+Environment="PATH=/venv/betbot/bin"
+WorkingDirectory=/home/ubuntu/betbot
+ExecStart=/venv/betbot/bin/python3 -m gunicorn -w 3 -b 0.0.0.0:5000 wsgi:app
+
+[Install]
+WantedBy=muti-user.target
