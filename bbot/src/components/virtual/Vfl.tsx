@@ -1,4 +1,4 @@
-import { Game, Results, Table } from "@/components/virtual";
+import { Game, Results, Table, Client } from "@/components/virtual";
 import { memo, useState, useEffect, useMemo } from "react";
 import { Button, Card, Input } from "@/components/ui";
 import { Divider } from "antd";
@@ -13,14 +13,14 @@ type parVal = {
     checkBalance: () => void;
   };
 };
+const client = new Client();
 
 function Vfl({ host, user }: parVal) {
   const [data, setData] = useState([]);
   const [results, setRes] = useState([]);
-  const [md, setMd] = useState<string>("");
+  const [md, setMd] = useState<number>(0);
   const [stable, setShow] = useState(true);
   const [table, setTable] = useState([]);
-  const [done, setDone] = useState("");
   const [slip, setSlip] = useState<string[]>([]);
   const [sslip, setSslip] = useState(false);
   const [odds, setOdd] = useState<number>(0);
@@ -32,8 +32,6 @@ function Vfl({ host, user }: parVal) {
 
   const resParams = useMemo(() => ({ md, results }), [md, results]);
   const gameParams = useMemo(() => ({ data, addSelect, timer, slip }), [md]);
-
-  //console.log("Vfl rendered: ", timer);
 
   useEffect(() => {
     const intervals = setInterval(() => {
@@ -49,24 +47,12 @@ function Vfl({ host, user }: parVal) {
       if (intervalid) clearInterval(intervalid);
       setChange(!change);
     }
-  }, [timer]);
+  }, [timer, change, intervalid]);
 
   useEffect(() => {
-    fetch(`${host}fixtures`)
-      .then((res) => res.json())
-      .then((res) => {
-        setTimer(res.x);
-        setMd(res.y);
-        setData(res.fixtures);
-        //console.log(`Matchday ${res.y} fetched`);
-      });
-
-    if (done !== md) {
-      update(null);
-    }
+    update(null);
   }, [change]);
 
-  //useEffect(() => console.log(slip), [slip]);
   useEffect(() => {
     const rawTemp: string | null = localStorage.getItem("slip");
     if (rawTemp) {
@@ -81,11 +67,14 @@ function Vfl({ host, user }: parVal) {
   }, [slip]);
 
   async function update(temp: string[] | null) {
-    const resData = await fetch(`${host}results`);
-    const res = await resData.json();
-    setRes(res.results);
-    setTable(res.table);
-    setDone(md);
+    client.fetch().then((data) => {
+      setTimer(data.time);
+      setMd(data.md);
+      setTable(data.table);
+      setData(data.fixtures);
+      setRes(data.results);
+    });
+
     setSlip(temp ? temp : []);
     setOdd(0.0);
     setStake(10);
@@ -231,8 +220,8 @@ function Vfl({ host, user }: parVal) {
           </Button>
         </div>
 
-        <div className="grid grid-cols-3 pb-8 gap-4">
-          <Card className="bg-black text-white shadow-lg">
+        <div className="grid grid-cols-12 pb-8 gap-4">
+          <Card className="col-span-5 bg-black text-white shadow-lg">
             <div className="text-xl text-center">
               Matchday {md} Starts in: {timer}
             </div>
@@ -240,7 +229,43 @@ function Vfl({ host, user }: parVal) {
             {/* ---------- fixtures -----------*/}
             <MemodGame params={gameParams} />
           </Card>
-          {tabs[active].content}
+          <div className="col-span-4"> {tabs[active].content}</div>
+
+          <div className="col-span-3 hidden lg:block border-4 rounded-3xl border-lime-500 bg-white">
+            <div className="">
+              {slip.map((s) => (
+                <div key={s} className="flex justify-around">
+                  <div className="">{s}</div>
+                  <div className="">1.55</div>
+                  <Button className="bg-red-400" onClick={() => addSelect([s])}>
+                    X
+                  </Button>
+                </div>
+              ))}
+              <div className="flex justify-around">
+                <div>total</div>
+                <div>{odds}</div>
+              </div>
+              <div className="flex justify-around">
+                <div>P.win</div>
+                <div>{(odds * stake).toFixed(2)}</div>
+              </div>
+              <div className="flex flex-div">
+                <Input
+                  value={stake}
+                  type="number"
+                  onChange={(e) => setStake(parseFloat(e.target.value))}
+                  className="flex-1"
+                />
+                <Button
+                  onClick={processBet}
+                  className="bg-blue-400 border rounded-2xl boder-yellow-300 text-orange-600"
+                >
+                  place bet
+                </Button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

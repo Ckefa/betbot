@@ -1,0 +1,32 @@
+[2023-09-26 09:13:32 +0300] [37574] [INFO] Starting gunicorn 21.2.0
+[2023-09-26 09:13:32 +0300] [37574] [INFO] Listening at: http://0.0.0.0:80 (37574)
+[2023-09-26 09:13:32 +0300] [37574] [INFO] Using worker: sync
+[2023-09-26 09:13:32 +0300] [37575] [INFO] Booting worker with pid: 37575
+[2023-09-26 09:21:37 +0300] [37574] [INFO] Handling signal: hup
+[2023-09-26 09:21:38 +0300] [37574] [INFO] Hang up: Master
+[2023-09-26 09:21:39 +0300] [37575] [INFO] Worker exiting (pid: 37575)
+connection successfully
+connection successfully
+connection successfully
+connection successfully
+connection successfully
+connection successfully
+connection successfully
+connection successfully
+connection successfully
+connection successfully
+connection successfully
+connection successfully
+connection successfully
+connection successfully
+connection successfully
+[2023-09-26 09:21:39 +0300] [37787] [INFO] Booting worker with pid: 37787
+[2023-09-26 09:21:40 +0300] [37574] [ERROR] Worker (pid:37575) was sent SIGTERM!
+[2023-09-27 07:30:17 +0300] [37574] [CRITICAL] WORKER TIMEOUT (pid:37787)
+[2023-09-27 07:30:59 +0300] [37574] [ERROR] Worker (pid:37787) was sent SIGKILL! Perhaps out of memory?
+[2023-09-27 07:31:15 +0300] [70082] [INFO] Booting worker with pid: 70082
+[2023-09-27 07:31:40 +0300] [37574] [CRITICAL] WORKER TIMEOUT (pid:70082)
+[2023-09-27 07:31:40 +0300] [70082] [INFO] Worker exiting (pid: 70082)
+[2023-09-27 07:31:40 +0300] [37574] [ERROR] Worker (pid:70082) exited with code 1
+[2023-09-27 07:31:40 +0300] [37574] [ERROR] Worker (pid:70082) exited with code 1.
+[2023-09-27 07:31:40 +0300] [70100] [INFO] Booting worker with pid: 70100

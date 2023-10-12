@@ -15,9 +15,9 @@ DISCONNECT = "quit"
 
 class Server:
     if "SERVER" in environ:
-        HOST = environ["HOST"]
+        HOST = environ["SERVER"]
     else:
-        HOST = "204.236.241.1"
+        HOST = "127.0.0.1"
     PORT = 5050
 
     def __init__(self):

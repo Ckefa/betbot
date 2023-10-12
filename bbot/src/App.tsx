@@ -2,7 +2,7 @@ import { Navbar, Home, Login, Signup, Vfl } from "@/components";
 import { Routes, Route } from "react-router-dom";
 import { useEffect, useState } from "react";
 
-const host = "/";
+const host = "http://localhost/";
 
 class Customer {
   name: string | null;

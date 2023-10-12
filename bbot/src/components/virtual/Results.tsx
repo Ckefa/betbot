@@ -2,7 +2,7 @@ import { Card } from "@/components/ui/card";
 import { Fragment } from "react";
 
 type parVal = {
-  params: { md: string; results: string[] };
+  params: { md: number; results: string[] };
 };
 
 function Results({ params }: parVal) {
@@ -14,7 +14,7 @@ function Results({ params }: parVal) {
     <Card className="bg-black p-4 text-white shadow-lg">
       <Fragment>
         <div className="text-xl text-center">
-          Matchday {md === "1" ? "30" : parseInt(md) - 1} Results
+          Matchday {md === 1 ? "30" : md - 1} Results
         </div>
         <div className="h-80 pt-4 flex flex-col justify-between">
           {results?.map((res, index) => (

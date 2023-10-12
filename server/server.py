@@ -1,42 +1,23 @@
 #!/usr/bin/env python3
 
 
-import json
-import socket
-import threading
-
 from server.master import Master, timer
 
+import json
+import asyncio
+import websockets
 
-ms = Master()
-HOST = socket.gethostbyname(socket.gethostname())
-HOST = "0.0.0.0"
-PORT = 5050
-ADDR = (HOST, PORT)
-server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server.bind(ADDR)
-FORMAT = "utf-8"
-HEADER = 64
-DISCONNECT = "quit"
+active_users = 0
 
 
-def handle_client(conn, addr):
-    print(f"[CONNECTED] {addr}")
-    conn.send("connection successfully".encode(FORMAT))
-    connected = True
+async def handle_connection(websocket, path):
+    global active_users
+    active_users += 1
+    try:
+        async for message in websocket:
+            print(f"[Received]: {message}")
 
-    while connected:
-        msg_len = conn.recv(HEADER).decode(FORMAT)
-        if msg_len:
-            msg_len = int(msg_len)
-            msg = conn.recv(msg_len).decode(FORMAT)
-            msg = json.loads(msg)
-
-            message = msg.get("message")
-            if message == DISCONNECT:
-                connected = False
-
-            elif message == "league":
+            if message == "update":
                 data = {
                     "time": timer.get_time(),
                     "md": ms.md,
@@ -45,25 +26,25 @@ def handle_client(conn, addr):
                     "table": ms.table,
                 }
                 data = json.dumps(data)
-                conn.send(str(len(data)).encode(FORMAT))
-                conn.send(data.encode(FORMAT))
-
+                await websocket.send(data)
             else:
-                data = msg.get("data")
-                print(type(data), data)
+                await websocket.send("MESSAGE RECEIVED!")
+    except Exception as e:
+        print("[DISCONNECTED]")
 
-    conn.close()
+    finally:
+        active_users -= 1
 
 
-def start():
-    print("[STARTING] server is starting.....")
-    print(f"[RUNNING] on address {HOST}")
-    server.listen()
+async def monitor_connections():
     while True:
-        conn, addr = server.accept()
-        thread = threading.Thread(target=handle_client, args=(conn, addr))
-        thread.start()
-        print(f"[ACTIVE CONNECTIONS] {threading.activeCount() -1}")
+        print(f"[ACTIVE]: {active_users}")
+        await asyncio.sleep(5)
 
 
-start()
+ms = Master()
+
+start_server = websockets.serve(handle_connection, "0.0.0.0", 5055)
+asyncio.get_event_loop().create_task(monitor_connections())
+asyncio.get_event_loop().run_until_complete(start_server)
+asyncio.get_event_loop().run_forever()
