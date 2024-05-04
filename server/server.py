@@ -2,49 +2,91 @@
 
 
 from server.master import Master, timer
+from server.crash_game import CrashGame
 
 import json
-import asyncio
-import websockets
+import socketio
+from time import sleep
+from threading import Thread
 
-active_users = 0
-
-
-async def handle_connection(websocket, path):
-    global active_users
-    active_users += 1
-    try:
-        async for message in websocket:
-            print(f"[Received]: {message}")
-
-            if message == "update":
-                data = {
-                    "time": timer.get_time(),
-                    "md": ms.md,
-                    "fixtures": ms.ongoing,
-                    "results": ms.completed,
-                    "table": ms.table,
-                }
-                data = json.dumps(data)
-                await websocket.send(data)
-            else:
-                await websocket.send("MESSAGE RECEIVED!")
-    except Exception as e:
-        print("[DISCONNECTED]")
-
-    finally:
-        active_users -= 1
-
-
-async def monitor_connections():
-    while True:
-        print(f"[ACTIVE]: {active_users}")
-        await asyncio.sleep(5)
-
+sio = socketio.Server(cors_allowed_origins="*")
+app = socketio.WSGIApp(sio)
 
 ms = Master()
 
-start_server = websockets.serve(handle_connection, "0.0.0.0", 5055)
-asyncio.get_event_loop().create_task(monitor_connections())
-asyncio.get_event_loop().run_until_complete(start_server)
-asyncio.get_event_loop().run_forever()
+clients = {}
+messages = []
+active_users = 0
+
+
+def master_event():
+    while True:
+        data = {
+            "time": timer.get_time(),
+            "md": ms.md,
+            "fixtures": ms.ongoing,
+            "results": ms.completed,
+            "table": ms.table,
+        }
+
+        data = json.dumps(data)
+
+        sio.emit("update", data)
+        sleep(1)
+
+
+Thread(target=master_event).start()
+crash = CrashGame(sio)
+
+
+@sio.event
+def connect(sid, environ):
+    global active_users
+
+    clients[sid] = True
+    active_users = len(clients)
+
+    print(f"[CONNECTED: {sid}]")
+    print(f"[ACTIVE: {active_users}]")
+
+
+@sio.event
+def message(sid, msg):
+    data = {"user": sid, "msg": msg}
+    messages.append(data)
+    sio.emit("message", messages)
+
+
+@sio.event
+def update_messages(sid):
+    sio.emit("message", messages, to=sid)
+
+
+@sio.event
+def update(sid):
+    global active_users
+
+    clients[sid] = True
+    active_users = len(clients)
+
+    data = {
+        "time": timer.get_time(),
+        "md": ms.md,
+        "fixtures": ms.ongoing,
+        "results": ms.completed,
+        "table": ms.table,
+    }
+
+    data = json.dumps(data)
+    sio.emit("update", data, to=sid)
+    return data
+
+
+@sio.event
+def disconnect(sid):
+    global active_users
+
+    del clients[sid]
+    active_users = len(clients)
+    print(f"[DISCONNECTED: {sid}]")
+    print(f"[ACTIVE: {active_users}]")

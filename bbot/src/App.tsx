@@ -1,4 +1,4 @@
-import { Navbar, Home, Login, Signup, Vfl } from "@/components";
+import { Navbar, Home, Login, Signup, Vfl, CrashGame } from "@/components";
 import { Routes, Route } from "react-router-dom";
 import { useEffect, useState } from "react";
 
@@ -37,6 +37,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login host={host} />} />
           <Route path="/vfl" element={<Vfl host={host} user={user} />} />
+          <Route path="/crash" element={<CrashGame />} />
           <Route path="/signup" element={<Signup host={host} />} />
         </Routes>
       </div>

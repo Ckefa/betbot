@@ -14,7 +14,6 @@ import {
 } from "@/components/ui";
 import { MoonIcon, SunIcon } from "@radix-ui/react-icons";
 import { MenuIcon, User } from "lucide-react";
-// import { logo } from "../assets";
 
 type parVal = {
   host: string;
@@ -52,7 +51,6 @@ function Navbar({ host, user }: parVal) {
     if (data.name) {
       user.name = data.name;
       user.bal = data.balance;
-      //console.log(user);
     } else {
       user.name = "clinton";
       user.bal = 1234.56;
@@ -72,6 +70,7 @@ function Navbar({ host, user }: parVal) {
   const menuItems = [
     { to: "/", text: "Home" },
     { to: "/vfl", text: "virtual" },
+    { to: "/crash", text: "CrashGame" },
     { to: "/bets", text: "My Bets" },
   ];
 

@@ -13,7 +13,6 @@ type parVal = {
     checkBalance: () => void;
   };
 };
-const client = new Client();
 
 function Vfl({ host, user }: parVal) {
   const [data, setData] = useState([]);
@@ -29,9 +28,25 @@ function Vfl({ host, user }: parVal) {
   const [timer, setTimer] = useState(30);
   const [change, setChange] = useState(false);
   const [active, setActive] = useState(0);
+  const [client, setClient] = useState();
 
   const resParams = useMemo(() => ({ md, results }), [md, results]);
   const gameParams = useMemo(() => ({ data, addSelect, timer, slip }), [md]);
+
+
+  useEffect(() => {
+    const client = new Client();
+    setClient(client);
+    client.sio.on("update", resp => {
+      const data = JSON.parse(resp);
+      setTimer(data.time);
+      setMd(data.md);
+      setTable(data.table);
+      setData(data.fixtures);
+      setRes(data.results);
+    });
+  }, []);
+
 
   useEffect(() => {
     const intervals = setInterval(() => {
@@ -66,15 +81,18 @@ function Vfl({ host, user }: parVal) {
     localStorage.setItem("slip", JSON.stringify(slip));
   }, [slip]);
 
-  async function update(temp: string[] | null) {
-    client.fetch().then((data) => {
-      setTimer(data.time);
-      setMd(data.md);
-      setTable(data.table);
-      setData(data.fixtures);
-      setRes(data.results);
-    });
+  useEffect(() => {
+    // client.update();
+    // setTimer(data.time);
+    // setMd(data.md);
+    // setTable(data.table);
+    // setData(data.fixtures);
+    // setRes(data.results);
+    //
+    //
+  }, [timer]);
 
+  async function update(temp: string[] | null) {
     setSlip(temp ? temp : []);
     setOdd(0.0);
     setStake(10);
