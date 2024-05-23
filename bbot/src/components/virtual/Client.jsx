@@ -51,7 +51,7 @@ class Client {
 		return new Promise(
 			(resolve, reject) =>
 				this.sio.emit("update", data => {
-					resolve(JSON.parse(data));
+					resolve(data);
 				})
 		);
 	}

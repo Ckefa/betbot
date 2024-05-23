@@ -31,7 +31,11 @@ class CrashGame:
 
             while True:
                 speed = 0.12
-                if multiplier > 25:
+                if multiplier > 100:
+                    speed = 0.0005
+                elif multiplier > 50:
+                    speed = 0.001
+                elif multiplier > 25:
                     speed = 0.005
                 elif multiplier > 10:
                     speed = 0.01

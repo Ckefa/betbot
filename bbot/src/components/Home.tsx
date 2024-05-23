@@ -37,6 +37,7 @@ function Home() {
         <img src={hero2} />
       </div>
 
+
       <div className="flex mt-8 gap-4">
         <section className="flex flex-col-reverse items-center lg:flex-row">
           <img src={hero1} />

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
   Button,
   Sheet,
@@ -14,25 +14,27 @@ import {
 } from "@/components/ui";
 import { MoonIcon, SunIcon } from "@radix-ui/react-icons";
 import { MenuIcon, User } from "lucide-react";
+import axios from "axios";
 
-type parVal = {
-  host: string;
-  user: {
-    name: string | null;
-    bal: number | null;
-    checkBalance: () => void;
-  };
-};
+
+import CONTEXT from "@/lib/context.js";
+import Count from "./Count";
+
 
 type respD = {
   name: string | null;
-  balance: number;
+  bal: number;
 };
 
-function Navbar({ host, user }: parVal) {
+function Navbar({ count }) {
   const [theme, setTheme] = useState<boolean>(true);
+  const [cust, setCust] = useState('');
+  const [cbal, setCbal] = useState(0);
 
-  console.log("Navbar rendered...", user.bal);
+
+  console.log("Navbar rendered...");
+  const { host, port, user } = useContext(CONTEXT);
+
 
   const changeTheme = () => {
     const app = document.querySelector(".app");
@@ -40,17 +42,30 @@ function Navbar({ host, user }: parVal) {
     setTheme((prev) => !prev);
   };
 
+  const getData = async () => {
+    const resp = await axios.get(`${host}:${port}/status`);
+    const data = resp.data;
+
+
+    console.log(data);
+
+    if (data.msg.toLowerCase() === 'ok') update(data);
+  }
+
   useEffect(() => {
-    fetch(`${host}status`)
-      .then((r) => r.json())
-      .then((r) => update(r));
+    getData();
+    console.log("Signaling user", "count", count.value);
+    console.log(user);
   }, []);
 
+
   const update = (data: respD) => {
-    console.log("this is the data", data);
     if (data.name) {
       user.name = data.name;
-      user.bal = data.balance;
+      user.bal = data.bal;
+      setCust(user.name);
+      setCbal(user.bal);
+      console.log(user);
     } else {
       user.name = "clinton";
       user.bal = 1234.56;
@@ -59,10 +74,9 @@ function Navbar({ host, user }: parVal) {
   };
 
   const logout = () =>
-    fetch(`${host}logout`)
-      .then((resp) => resp.json())
+    axios.get(`${host}:${port}/logout`)
       .then((resp) => {
-        console.log(resp);
+        console.log(resp.data);
         user.bal = null;
         user.name = null;
       });
@@ -101,8 +115,9 @@ function Navbar({ host, user }: parVal) {
         </SheetContent>
       </Sheet>
 
-      <div className=" font-bold">BETBOT</div>
+      <Count count={count} user={user} />
 
+      <div className=" font-bold">BETBOT</div>
       <nav className="hidden md:flex">
         <ul className="flex gap-4 items-center">
           {menuItems.map((item) => (
@@ -128,11 +143,11 @@ function Navbar({ host, user }: parVal) {
 
             <DropdownMenuSeparator />
 
-            <DropdownMenuItem>name: {user.name}</DropdownMenuItem>
+            <DropdownMenuItem>name: {cust}</DropdownMenuItem>
 
             <DropdownMenuSeparator />
 
-            <DropdownMenuItem>bal: {user.bal}</DropdownMenuItem>
+            <DropdownMenuItem>bal: {cbal}</DropdownMenuItem>
 
             <DropdownMenuItem>
               <Button className="w-full h-5" onClick={logout}>

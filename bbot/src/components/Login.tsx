@@ -1,71 +1,74 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Navigate, Link } from "react-router-dom";
 import { Input, Button } from "@/components/ui";
 import { Form } from "antd";
-
-type parVal = {
-  host: string;
-};
+import CONTEXT from "@/lib/context";
+import axios from "axios";
 
 type subD = {
   name: string | null;
   password: string | null;
 };
 
-function Login({ host }: parVal) {
+function Login() {
   const [redirect, setRedirect] = useState(false);
+
+  const { host, port } = useContext(CONTEXT);
 
   console.log("Login Rendered......");
 
-  const submit = (values: subD) => {
-    fetch(`${host}login`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(values),
-    })
-      .then((resp) => resp.json())
-      .then((resp) => {
-        console.log(resp);
-        if (resp.resp.includes("success")) {
-          setRedirect(!redirect);
-        }
-      });
+  const userLogin = async (data: subD) => {
+    const req = await axios.post(`${host}:${port}/login`, data);
+    const resp = req.data;
+
+    console.log(resp);
+
+    if (resp.msg === 'ok') {
+      setRedirect(!redirect);
+    }
   };
 
   if (redirect) {
     return <Navigate to="/vfl" />;
   }
 
+
   return (
     <div className="min-h-[80vh] flex">
       <Form
         layout="vertical"
-        onFinish={submit}
+        onFinish={userLogin}
         className="my-auto flex flex-col items-center w-[40vw] mx-auto gap-4 
       rounded-2xl border border-foreground  shadow-2xl text-foreground"
       >
         <div className="mt-10 text-2xl">Login to place your bets.</div>
-        <Form.Item
-          name="email"
-          className="text-foreground"
-          rules={[{ required: true, message: "Please fill your email!!." }]}
-        >
+
+
+        <div>
           <div>Email</div>
-          <Input className="border border-foreground" />
-        </Form.Item>
-        <Form.Item
-          name="password"
-          className="text-foreground"
-          rules={[{ required: true, message: "Please fill your Password!!" }]}
-        >
+          <Form.Item
+            name="email"
+            className="text-foreground"
+            rules={[{ required: true, message: "Please fill your email!!." }]}
+          >
+            <Input className="border border-foreground" />
+          </Form.Item>
+        </div>
+
+
+        <div>
           <div>Password</div>
-          <Input className="border border-foreground" />
-        </Form.Item>
-        <Form.Item>
-          <Button type="submit">Login</Button>
-        </Form.Item>
+          <Form.Item
+            name="passwd"
+            className="text-foreground"
+            rules={[{ required: true, message: "Please fill your Password!!" }]}
+          >
+            <Input className="border border-foreground" />
+          </Form.Item>
+          <Form.Item>
+            <Button type="submit">Login</Button>
+          </Form.Item>
+        </div>
 
         <Form.Item className="text-foreground">
           <Link to="/signup">

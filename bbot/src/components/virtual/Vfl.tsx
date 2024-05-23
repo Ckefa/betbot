@@ -1,7 +1,10 @@
 import { Game, Results, Table, Client } from "@/components/virtual";
-import { memo, useState, useEffect, useMemo } from "react";
+import { memo, useState, useEffect, useMemo, useContext } from "react";
 import { Button, Card, Input } from "@/components/ui";
 import { Divider } from "antd";
+import axios from "axios";
+
+import CONTEXT from "@/lib/context";
 
 const MemodResults = memo(Results);
 const MemodGame = memo(Game);
@@ -14,7 +17,7 @@ type parVal = {
   };
 };
 
-function Vfl({ host, user }: parVal) {
+function Vfl() {
   const [data, setData] = useState([]);
   const [results, setRes] = useState([]);
   const [md, setMd] = useState<number>(0);
@@ -32,6 +35,10 @@ function Vfl({ host, user }: parVal) {
 
   const resParams = useMemo(() => ({ md, results }), [md, results]);
   const gameParams = useMemo(() => ({ data, addSelect, timer, slip }), [md]);
+
+
+  const { host, port } = useContext(CONTEXT);
+
 
 
   useEffect(() => {
@@ -136,13 +143,7 @@ function Vfl({ host, user }: parVal) {
       alert("Insufficient balance please top up your account.");
     else {
       user.bal -= stake;
-      fetch(`${host}place`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ slip: slip, stake: stake, odds: odds }),
-      })
-        .then((resp) => resp.json())
-        .then((resp) => console.log(resp));
+      axios.post(`${host}:${port}/place`, { slip: slip, stake: stake, odds: odds });
     }
     user.checkBalance();
   }

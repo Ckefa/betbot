@@ -51,6 +51,13 @@ def connect(sid, environ):
 
 
 @sio.event
+def place_bet(sid, environ):
+    print(environ)
+    bet = environ.copy()
+    sio.emit("newbet", bet)
+
+
+@sio.event
 def message(sid, msg):
     data = {"user": sid, "msg": msg}
     messages.append(data)
@@ -77,7 +84,6 @@ def update(sid):
         "table": ms.table,
     }
 
-    data = json.dumps(data)
     sio.emit("update", data, to=sid)
     return data
 

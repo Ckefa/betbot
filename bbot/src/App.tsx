@@ -1,10 +1,13 @@
-import { Navbar, Home, Login, Signup, Vfl, CrashGame } from "@/components";
 import { Routes, Route } from "react-router-dom";
-import { useEffect, useState } from "react";
 
-const host = "http://localhost/";
 
-class Customer {
+import { Navbar, Home, Login, Signup, Vfl, CrashGame } from "@/components";
+import CONTEXT from "./lib/context";
+import { Signal, effect, useSignal } from "@preact/signals";
+import { useEffect } from "react";
+
+
+class User {
   name: string | null;
   bal: number;
 
@@ -18,30 +21,40 @@ class Customer {
   }
 }
 
+const count = new Signal({ test: "clinton" });
+
+const contexts = {
+  host: "http://127.0.0.1",
+  port: 7000,
+}
+
+
 function App() {
-  const [user] = useState<Customer>(new Customer());
-  const [bal, setBal] = useState(user.bal);
+  console.log("App rendering......");
 
-  useEffect(() => setBal(user.bal), [user.bal]);
 
-  console.log("APlication rendering.....", bal);
+  const user = new User();
+  contexts.user = user;
+
 
   return (
-    <div className="app lg:container min-h-screen light bg-background text-foreground">
-      <header className="h-8 pt-4">
-        <Navbar host={host} user={user} />
-      </header>
+    <CONTEXT.Provider value={contexts}>
+      <div className="app lg:container min-h-screen light bg-background text-foreground">
+        <header className="h-8 pt-4">
+          <Navbar count={count} />
+        </header>
 
-      <div className="mt-8">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login host={host} />} />
-          <Route path="/vfl" element={<Vfl host={host} user={user} />} />
-          <Route path="/crash" element={<CrashGame />} />
-          <Route path="/signup" element={<Signup host={host} />} />
-        </Routes>
+        <div className="mt-8">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/vfl" element={<Vfl />} />
+            <Route path="/crash" element={<CrashGame />} />
+            <Route path="/signup" element={<Signup />} />
+          </Routes>
+        </div>
       </div>
-    </div>
+    </CONTEXT.Provider>
   );
 }
 
