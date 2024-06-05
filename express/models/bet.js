@@ -22,6 +22,8 @@ const betSchema = new Schema({
 		type: Number,
 		default: 0
 	}
+	,
+	// default: true
 });
 
 

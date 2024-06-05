@@ -3,4 +3,4 @@ flask
 pandas
 flask-sqlalchemy
 Flask-CORS
-websockets
+python-socketio
