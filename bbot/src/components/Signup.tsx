@@ -4,7 +4,6 @@ import { Input, Button } from "@/components/ui";
 import { Form } from "antd";
 import axios from "axios";
 
-
 import CONTEXT from "@/lib/context";
 
 type subVal = {
@@ -16,23 +15,25 @@ type subVal = {
 function Signup() {
   const [redirect, setRedirect] = useState(false);
 
-
-  console.log("Registration  Rendered....");
+  console.log("Registration Rendered...");
 
   const { host, port } = useContext(CONTEXT);
 
-
   const userSignup = async (values: subVal) => {
-    const req = await axios.post(`${host}:${port}/signup`, values);
-    const resp = req.data;
+    try {
+      const req = await axios.post(`${host}:${port}/signup`, values);
+      const resp = req.data;
 
-    console.log(resp);
+      console.log(resp);
 
-    if (resp.msg === 'ok') {
-      console.log("signup success");
-      setRedirect(true);
+      if (resp.msg === 'ok') {
+        console.log("signup success");
+        setRedirect(true);
+      }
+    } catch (error) {
+      console.error("Signup error:", error);
     }
-  }
+  };
 
   if (redirect) {
     return <Navigate to="/login" />;
@@ -43,56 +44,41 @@ function Signup() {
       <Form
         layout="vertical"
         onFinish={userSignup}
-        className="my-auto flex flex-col items-center w-[40vw] mx-auto gap-2 
-      rounded-2xl border border-foreground  shadow-2xl text-foreground"
+        className="my-auto flex flex-col items-center w-[40vw] mx-auto gap-2
+      rounded-2xl border border-foreground shadow-2xl text-foreground"
       >
         <div className="mt-10 text-2xl">Login to place your bets.</div>
 
         <div>
           <div>Email</div>
           <Form.Item
-            name="name"
-            className="text-foreground"
-            rules={[{ required: true, message: "Please fill your email!!." }]}
-          >
-            <Input className="border border-foreground" />
-          </Form.Item>
-        </div>
-
-        <div>
-          <div>Email</div>
-          <Form.Item
             name="email"
             className="text-foreground"
-            rules={[{ required: true, message: "Please fill your email!!." }]}
+            rules={[{ required: true, message: "Please fill your email!!" }]}
           >
             <Input className="border border-foreground" />
           </Form.Item>
         </div>
-
 
         <div>
           <div>Password</div>
           <Form.Item
-            name="passwd"
+            name="password"
             className="text-foreground"
             rules={[{ required: true, message: "Please fill your Password!!" }]}
           >
-            <Input className="border border-foreground" />
+            <Input type="password" className="border border-foreground" />
           </Form.Item>
-
         </div>
-
 
         <div>
           <div>Confirm your password</div>
           <Form.Item
-
             name="cpassword"
             className="text-foreground"
             rules={[{ required: true, message: "Please repeat your Password!!" }]}
           >
-            <Input className="border border-foreground" />
+            <Input type="password" className="border border-foreground" />
           </Form.Item>
         </div>
 
@@ -106,14 +92,14 @@ function Signup() {
             <Button
               variant="outline"
               size="sm"
-              className="border border-foreground "
+              className="border border-foreground"
             >
               login
             </Button>
           </Link>
         </Form.Item>
-      </Form >
-    </div >
+      </Form>
+    </div>
   );
 }
 

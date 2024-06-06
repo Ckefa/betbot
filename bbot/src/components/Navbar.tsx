@@ -13,28 +13,30 @@ import {
   DropdownMenuSeparator,
 } from "@/components/ui";
 import { MoonIcon, SunIcon } from "@radix-ui/react-icons";
-import { MenuIcon, User } from "lucide-react";
+import { MenuIcon, User as UserIcn } from "lucide-react";
 import axios from "axios";
-
+import User from "@/lib/user";
 
 import CONTEXT from "@/lib/context.js";
-import Count from "./Count";
-
 
 type respD = {
   name: string | null;
   bal: number;
+  user: User;
 };
 
-function Navbar({ count }) {
+// interface NavbarProps {
+//   count: { value: number };
+// }
+
+
+function Navbar() {
   const [theme, setTheme] = useState<boolean>(true);
-  const [cust, setCust] = useState('');
-  const [cbal, setCbal] = useState(0);
-
-
-  console.log("Navbar rendered...");
+  const [cust, setCust] = useState<string>('');
+  const [cbal, setCbal] = useState<number>(0);
   const { host, port, user } = useContext(CONTEXT);
 
+  console.log("Navbar rendered...");
 
   const changeTheme = () => {
     const app = document.querySelector(".app");
@@ -43,33 +45,34 @@ function Navbar({ count }) {
   };
 
   const getData = async () => {
-    const resp = await axios.get(`${host}:${port}/status`);
-    const data = resp.data;
+    try {
+      const resp = await axios.get<{ msg: string; data: respD }>(`${host}:${port}/status`);
+      const data = resp.data.data;
 
+      console.log(data);
 
-    console.log(data);
-
-    if (data.msg.toLowerCase() === 'ok') update(data);
+      if (resp.data.msg.toLowerCase() === 'ok') update(data);
+    } catch (error) {
+      console.error("Error getting data:", error);
+    }
   }
 
   useEffect(() => {
     getData();
-    console.log("Signaling user", "count", count.value);
     console.log(user);
   }, []);
 
-
   const update = (data: respD) => {
-    if (data.name) {
+    if (data.name && user) {
       user.name = data.name;
       user.bal = data.bal;
       setCust(user.name);
       setCbal(user.bal);
       console.log(user);
-    } else {
+    } else if (user) {
       user.name = "clinton";
       user.bal = 1234.56;
-      console.log("Errer getting user details.");
+      console.log("Error getting user details.");
     }
   };
 
@@ -77,8 +80,10 @@ function Navbar({ count }) {
     axios.get(`${host}:${port}/logout`)
       .then((resp) => {
         console.log(resp.data);
-        user.bal = null;
-        user.name = null;
+        if (user) {
+          user.bal = null;
+          user.name = null;
+        }
       });
 
   const menuItems = [
@@ -115,9 +120,8 @@ function Navbar({ count }) {
         </SheetContent>
       </Sheet>
 
-      <Count count={count} user={user} />
 
-      <div className=" font-bold">BETBOT</div>
+      <div className="font-bold">BETBOT</div>
       <nav className="hidden md:flex">
         <ul className="flex gap-4 items-center">
           {menuItems.map((item) => (
@@ -135,7 +139,7 @@ function Navbar({ count }) {
       <div className="flex gap-4 items-center pr-8">
         <DropdownMenu>
           <DropdownMenuTrigger>
-            <User />
+            <UserIcn />
           </DropdownMenuTrigger>
 
           <DropdownMenuContent>
@@ -164,4 +168,5 @@ function Navbar({ count }) {
     </div>
   );
 }
+
 export default Navbar;

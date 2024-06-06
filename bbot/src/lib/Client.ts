@@ -3,7 +3,10 @@ import io from "socket.io-client";
 const [HOST, PORT] = ['127.0.0.1', 5055];
 
 class Client {
-	static instance = null
+	static instance: Client | null = null
+	connected: boolean = false
+	callBacks: Array<() => void> = []
+	sio
 
 	constructor() {
 		if (Client.instance) return Client.instance;
@@ -33,30 +36,18 @@ class Client {
 	}
 
 
-	send(msg) {
-		if (this.connected) {
+	send(msg: string) {
+		if (this.connected && this.sio) {
 			this.sio.emit("message", msg);
 			console.log(`[SENT: ${msg} ]`);
 			return true
 		}
 		this.callBacks.push(() => {
-			this.sio.emit("message", msg);
+			this.sio?.emit("message", msg);
 			console.log(`[SENT: ${msg} ]`);
 		});
 	}
 
-	fetch() {
-		return new Promise(
-			(resolve, reject) =>
-				this.sio.emit("update", data => {
-					resolve(data);
-				})
-		);
-	}
-
-	update() {
-		this.sio.emit("update");
-	}
 }
 
 

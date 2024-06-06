@@ -3,29 +3,17 @@ import { Routes, Route } from "react-router-dom";
 
 import { Navbar, Home, Login, Signup, Vfl, CrashGame } from "@/components";
 import CONTEXT from "./lib/context";
-import { Signal, effect, useSignal } from "@preact/signals";
-import { useEffect } from "react";
+// import { Signal } from "@preact/signals";
+
+import User from "@/lib/user";
 
 
-class User {
-  name: string | null;
-  bal: number;
-
-  constructor(name = null, bal = 0.0) {
-    this.name = name;
-    this.bal = bal;
-  }
-
-  checkBalance(): void {
-    console.log(this.name, this.bal);
-  }
-}
-
-const count = new Signal({ test: "clinton" });
+// const count = new Signal({ test: "clinton" });
 
 const contexts = {
   host: "http://127.0.0.1",
   port: 7000,
+  user: new User()
 }
 
 
@@ -41,7 +29,7 @@ function App() {
     <CONTEXT.Provider value={contexts}>
       <div className="app lg:container min-h-screen light bg-background text-foreground">
         <header className="h-8 pt-4">
-          <Navbar count={count} />
+          <Navbar />
         </header>
 
         <div className="mt-8">

@@ -8,14 +8,17 @@ import CONTEXT from "@/lib/context";
 
 const MemodResults = memo(Results);
 const MemodGame = memo(Game);
-type parVal = {
-  host: string;
-  user: {
-    name: string | null;
-    bal: number;
-    checkBalance: () => void;
-  };
-};
+
+interface User {
+  name: string | null;
+  bal: number;
+  checkBalance: () => void;
+}
+
+// interface ContextType {
+//   host: string;
+//   port: number;
+// }
 
 function Vfl() {
   const [data, setData] = useState([]);
@@ -31,20 +34,23 @@ function Vfl() {
   const [timer, setTimer] = useState(30);
   const [change, setChange] = useState(false);
   const [active, setActive] = useState(0);
-  const [client, setClient] = useState();
 
   const resParams = useMemo(() => ({ md, results }), [md, results]);
   const gameParams = useMemo(() => ({ data, addSelect, timer, slip }), [md]);
 
-
   const { host, port } = useContext(CONTEXT);
 
-
+  const user: User = {
+    name: "User", // Replace with actual user data
+    bal: 100, // Replace with actual user balance
+    checkBalance: () => {
+      // Implement the check balance functionality
+    },
+  };
 
   useEffect(() => {
-    const client = new Client();
-    setClient(client);
-    client.sio.on("update", resp => {
+    const clientInstance = new Client();
+    clientInstance.sio?.on("update", (resp: any) => {
       const data = JSON.parse(resp);
       setTimer(data.time);
       setMd(data.md);
@@ -53,7 +59,6 @@ function Vfl() {
       setRes(data.results);
     });
   }, []);
-
 
   useEffect(() => {
     const intervals = setInterval(() => {
@@ -87,17 +92,6 @@ function Vfl() {
   useEffect(() => {
     localStorage.setItem("slip", JSON.stringify(slip));
   }, [slip]);
-
-  useEffect(() => {
-    // client.update();
-    // setTimer(data.time);
-    // setMd(data.md);
-    // setTable(data.table);
-    // setData(data.fixtures);
-    // setRes(data.results);
-    //
-    //
-  }, [timer]);
 
   async function update(temp: string[] | null) {
     setSlip(temp ? temp : []);
@@ -134,7 +128,6 @@ function Vfl() {
         return parseFloat(num.toFixed(2));
       });
     }
-    //console.log(r);
   }
 
   function processBet() {
@@ -152,7 +145,6 @@ function Vfl() {
     {
       content: (
         <div>
-          {/*------- Results --------*/}
           <MemodResults params={resParams} />
         </div>
       ),
@@ -169,7 +161,6 @@ function Vfl() {
           <div>
             <div className="text-3xl text-blalck-900">VIRTUAL EPL GAMES</div>
           </div>
-          {/*------- toggle buttons ---------*/}
           <div>
             <Card className="mr-auto p-1 bg-gray-400">
               <div className="flex gap-4">
@@ -245,7 +236,6 @@ function Vfl() {
               Matchday {md} Starts in: {timer}
             </div>
 
-            {/* ---------- fixtures -----------*/}
             <MemodGame params={gameParams} />
           </Card>
           <div className="col-span-4"> {tabs[active].content}</div>
