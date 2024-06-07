@@ -10,7 +10,8 @@ type cntxType = {
 
 const appContext = {
   host: "18.207.139.230",
-  port: 5055,
+  port: 80,
+  wsport: 5055,
   user: new User(),
 }
 
