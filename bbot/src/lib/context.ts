@@ -9,7 +9,7 @@ type contextType = {
 
 
 const appContext = {
-  host: "localhost",
+  host: "18.207.139.230",
   port: 5055,
   user: new User(),
 }

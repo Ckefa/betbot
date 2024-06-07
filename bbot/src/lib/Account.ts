@@ -1,7 +1,7 @@
 import axios from "axios";
 import Client from "@/lib/Client";
 
-const host = "http://localhost:7000";
+const host = "http://18.207.139.230:5000";
 
 interface Options {
   setBet: (amount: number) => void;

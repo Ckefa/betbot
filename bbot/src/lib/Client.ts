@@ -1,6 +1,6 @@
 import io from "socket.io-client";
 
-const [HOST, PORT] = ['127.0.0.1', 5055];
+const [HOST, PORT] = ['18.207.139.230', 5055];
 
 class Client {
 	static instance: Client | null = null
