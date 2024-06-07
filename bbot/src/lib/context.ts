@@ -1,10 +1,10 @@
 import { createContext } from "react";
 import User from "./user";
 
-type contextType = {
-  host: null | string;
-  port: null | number;
-  user: null | User;
+type cntxType = {
+  host: string | null;
+  port: number | null;
+  user: User | null;
 }
 
 
@@ -14,6 +14,7 @@ const appContext = {
   user: new User(),
 }
 
-const CONTEXT = createContext<contextType>(appContext);
+const CONTEXT = createContext<cntxType>(appContext);
 
+export { appContext };
 export default CONTEXT;

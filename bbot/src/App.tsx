@@ -11,8 +11,8 @@ import User from "@/lib/user";
 // const count = new Signal({ test: "clinton" });
 
 const contexts = {
-  host: "http://127.0.0.1",
-  port: 7000,
+  host: "http://18.207.139.230",
+  port: 80,
   user: new User()
 }
 

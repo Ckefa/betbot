@@ -1,6 +1,6 @@
 import io, { Socket } from "socket.io-client";
 
-const [HOST, PORT] = ['127.0.0.1', 5055];
+const [HOST, PORT] = ['18.207.139.230', 5055];
 
 type SetData = (data: any) => void;
 type SetMessages = (messages: string) => void;

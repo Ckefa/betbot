@@ -1,7 +1,10 @@
 import axios from "axios";
-import Client from "@/lib/Client";
+import { appContext } from "./context";
+import Client from "./Client";
 
-const host = "http://18.207.139.230:5000";
+
+const { host, port } = appContext;
+const hostUrl: string = `http://${host}:${port}`;
 
 interface Options {
   setBet: (amount: number) => void;
@@ -37,7 +40,7 @@ class Account {
     const client = new Client();
     this.sio = client.sio;
 
-    axios.get(`${host}/status`).then(resp => {
+    axios.get(`${hostUrl}/status`).then(resp => {
       this._id = resp.data._id;
       this.name = resp.data.name;
       this.bal = resp.data.bal;
@@ -79,7 +82,7 @@ class Account {
     };
 
     try {
-      const resp = await axios.post(`${host}/bet`, bet);
+      const resp = await axios.post(`${hostUrl}/bet`, bet);
       const respData = await resp.data;
 
       console.log(respData);
@@ -104,7 +107,7 @@ class Account {
     }
     console.log(bet);
 
-    axios.post(`${host}/cashout`, { betId: this.betId, odd: mult }).then(resp => {
+    axios.post(`${hostUrl}/cashout`, { betId: this.betId, odd: mult }).then(resp => {
       console.log(resp.data);
       const { bal } = resp.data;
       this.bal = bal;
