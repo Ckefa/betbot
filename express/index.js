@@ -21,7 +21,7 @@ new Auth(app);
 new PlaceBet(app);
 
 app.get("/", async (req, resp) => {
-	resp.render("BetBot Homepage");
+	resp.send("BetBot Homepage");
 });
 
 
